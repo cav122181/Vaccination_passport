@@ -1,16 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Vaccination_passport.Models;
 
 namespace Vaccination_passport.Windows
@@ -20,13 +9,13 @@ namespace Vaccination_passport.Windows
     /// </summary>
     public partial class NewPassWindow : Window
     {
-        
+
         public NewPassWindow()
         {
             InitializeComponent();
         }
 
-     
+
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             //MainWindow mainWindow = new MainWindow();
@@ -55,12 +44,12 @@ namespace Vaccination_passport.Windows
             string sideEff = Hepatitis.SideEffects.Text;
 
             //записуємо особу
-            DataAccess dataAccess = (DataAccess)App.Current.TryFindResource("SuperDB");
+            DataAccess dataAccess = (DataAccess) App.Current.TryFindResource("SuperDB");
             bool status = dataAccess.Insert($"INSERT INTO [Person] ([full_name], [birth_date], [amb_card], " +
                 $"[doctor], [polyclinic], [declaration_date])" +
                 $" VALUES ('{fullName}', '{birthDate}', '{ambCard}'," +
                 $" '{doctor}', '{polyclinic}', '{declDate}');");
-            
+
             if (status) MessageBox.Show("Запис створено");
             else MessageBox.Show("Wa wa waaa");
 

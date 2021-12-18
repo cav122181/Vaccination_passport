@@ -25,13 +25,14 @@ namespace Vaccination_passport.Windows
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             string name = SearchBox.Text;
-            DataAccess dataAccess = (DataAccess)App.Current.TryFindResource("SuperDB");
+            DataAccess dataAccess = (DataAccess) App.Current.TryFindResource("SuperDB");
             List<Person> people = dataAccess.GetPeople($"SELECT * FROM [Person] WHERE [full_name]='{name}';");
 
 
             //MessageBox.Show(person.ToString());
-            PassportWindow PassWindow = new PassportWindow(people[0]);
-            PassWindow.Resources["currentPerson"] = people[0];
+            //перевірити, коли немає користувача
+            PassportWindow PassWindow = new PassportWindow(people [0]);
+            PassWindow.Resources ["currentPerson"] = people [0];
             PassWindow.Show();
 
 

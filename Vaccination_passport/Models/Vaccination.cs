@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Vaccination_passport.Models
 {
@@ -10,7 +6,7 @@ namespace Vaccination_passport.Models
     {
         public int ID { get; set; }
         public Person Person { get; set; }
-        public Disease Disease { get; set; } 
+        public Disease Disease { get; set; }
         public DateTime? VacDate { get; set; }
         public string Nurse { get; set; }
         public string VacName { get; set; }

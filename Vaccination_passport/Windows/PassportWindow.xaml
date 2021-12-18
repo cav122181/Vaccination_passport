@@ -7,7 +7,7 @@
         xmlns:uc="clr-namespace:Vaccination_passport.User_Controls"
         mc:Ignorable="d"
         DataContext="{DynamicResource currentPerson}"
-        Title="PassportWindow" Height="450" Width="800" Icon="Y:\Mariia\Pictures\PassportLogo.png">
+        Title="PassportWindow" Height="450" Width="800" Icon="{StaticResource Logo}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="15"/>

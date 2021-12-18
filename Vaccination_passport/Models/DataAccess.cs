@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
+using System.IO;
 using System.Windows;
 
 namespace Vaccination_passport.Models
@@ -9,9 +10,18 @@ namespace Vaccination_passport.Models
     internal class DataAccess
     {
         private OleDbConnection Access { get; set; }
+
+        string GetProjectDirectory()
+        {
+            string workingDirectory = Environment.CurrentDirectory;
+            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+            return projectDirectory;
+        }
+
         public DataAccess()
         {
-            this.Access = new OleDbConnection(@"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = C:\Users\mc339\source\repos\Vaccination_passport\Vaccination_passport\PassVac.accdb");
+            string dbLoc = Path.Combine(GetProjectDirectory(), "PassVac.accdb");
+            this.Access = new OleDbConnection(@$"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = {dbLoc}");
         }
         //тут будуть методи
 
@@ -43,13 +53,13 @@ namespace Vaccination_passport.Models
                 while (reader.Read())
                 {
                     Person person = new Person();
-                    person.ID = (int)DBNullCheck(reader["id"]);
-                    person.FullName = (string)DBNullCheck(reader["full_name"]);
-                    person.BirthDate = (DateTime)DBNullCheck(reader["birth_date"]);
-                    person.AmbCard = (string)DBNullCheck(reader["amb_card"]);
-                    person.Doctor = (string)DBNullCheck(reader["doctor"]);
-                    person.Polyclinic = (string)DBNullCheck(reader["polyclinic"]);
-                    person.DeclDate = (DateTime?)DBNullCheck(reader["declaration_date"]);
+                    person.ID = (int) DBNullCheck(reader ["id"]);
+                    person.FullName = (string) DBNullCheck(reader ["full_name"]);
+                    person.BirthDate = (DateTime) DBNullCheck(reader ["birth_date"]);
+                    person.AmbCard = (string) DBNullCheck(reader ["amb_card"]);
+                    person.Doctor = (string) DBNullCheck(reader ["doctor"]);
+                    person.Polyclinic = (string) DBNullCheck(reader ["polyclinic"]);
+                    person.DeclDate = (DateTime?) DBNullCheck(reader ["declaration_date"]);
                     people.Add(person);
                 }
 
@@ -89,19 +99,19 @@ namespace Vaccination_passport.Models
                 {
                     int personId;
                     Vaccination vaccination = new Vaccination();
-                    vaccination.ID = (int)DBNullCheck(reader["id"]);
-                    vaccination.VacDate = (DateTime?)DBNullCheck(reader["vaccination_date"]);
-                    vaccination.Nurse = (string)DBNullCheck(reader["nurse_full_name"]);
-                    vaccination.VacName = (string)DBNullCheck(reader["vaccine_name"]);
-                    vaccination.Dose = (float)DBNullCheck(reader["dose"]);
-                    vaccination.ExpirationDate = (DateTime?)DBNullCheck(reader["expiration_date"]);
-                    vaccination.SerialNumber = (string)DBNullCheck(reader["serial_number"]);
-                    vaccination.SideEff = (string)DBNullCheck(reader["side_effects"]);
-                    personId = (int)DBNullCheck(reader["person_id"]);
+                    vaccination.ID = (int) DBNullCheck(reader ["id"]);
+                    vaccination.VacDate = (DateTime?) DBNullCheck(reader ["vaccination_date"]);
+                    vaccination.Nurse = (string) DBNullCheck(reader ["nurse_full_name"]);
+                    vaccination.VacName = (string) DBNullCheck(reader ["vaccine_name"]);
+                    vaccination.Dose = (float) DBNullCheck(reader ["dose"]);
+                    vaccination.ExpirationDate = (DateTime?) DBNullCheck(reader ["expiration_date"]);
+                    vaccination.SerialNumber = (string) DBNullCheck(reader ["serial_number"]);
+                    vaccination.SideEff = (string) DBNullCheck(reader ["side_effects"]);
+                    personId = (int) DBNullCheck(reader ["person_id"]);
 
                     //
-                    vaccination.Person = GetPeople($"SELECT * FROM [Person] WHERE [person_id]={personId}")[0];
-                    vaccination.Disease = GetDiseases($"")[0];
+                    vaccination.Person = GetPeople($"SELECT * FROM [Person] WHERE [person_id]={personId}") [0];
+                    vaccination.Disease = GetDiseases($"") [0];
 
                     //vaccination.Person 0 
                     //vaccination.Disease 
@@ -150,9 +160,9 @@ namespace Vaccination_passport.Models
                 while (reader.Read())
                 {
                     Disease disease = new Disease();
-                    disease.ID = (int)DBNullCheck(reader["id"]);
-                    disease.DisName = (string)DBNullCheck(reader["dis_name"]);
-                    disease.VaccineNumber = (int)DBNullCheck(reader["vaccination_number"]);
+                    disease.ID = (int) DBNullCheck(reader ["id"]);
+                    disease.DisName = (string) DBNullCheck(reader ["dis_name"]);
+                    disease.VaccineNumber = (int) DBNullCheck(reader ["vaccination_number"]);
 
                     diseases.Add(disease);
                 }

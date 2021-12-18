@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Vaccination_passport"
         xmlns:tk ="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Icon="Y:\Mariia\Pictures\PassportLogo.png">
+        Title="MainWindow" Height="450" Width="800" Icon="{StaticResource Logo}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -38,7 +38,7 @@
         
         <Button x:Name="SearchButton" Click="SearchButton_Click" Grid.Column="3" Grid.Row="3" Margin="0,70" Height="30" Background="#019BA9">
             <Button.Content>
-                <Image Source="Y:\Mariia\Pictures\Search.png"></Image>
+                <Image Source="{StaticResource SearchImg}"></Image>
             </Button.Content>
         </Button>
         
