@@ -151,12 +151,11 @@
                             Grid.Row="0"
                             Grid.Column="1"
                             Grid.ColumnSpan="7"
-                            Style="{StaticResource AquaTextBox}"
-                            >
+                            Style="{StaticResource AquaTextBox}">
                             <TextBox.Text>
                                 <MultiBinding StringFormat="{}{0}, {1} доза вакцини">
-                                    <Binding Path="Vaccine.Disease.DiseaseName"/>
-                                    <Binding Path="VaccinationNumber"/>
+                                    <Binding Path="Vaccine.Disease.DiseaseName" />
+                                    <Binding Path="VaccinationNumber" />
 
                                 </MultiBinding>
                             </TextBox.Text>
@@ -208,8 +207,8 @@
                             x:Name="VacDate"
                             Grid.Row="2"
                             Grid.Column="1"
-                            Style="{StaticResource FatTextBox}" 
-                            Text="{Binding Source={x:Static sys:DateTime.Now}, Mode=OneWay, StringFormat='dd.MM.yyyy'}"/>
+                            Style="{StaticResource FatTextBox}"
+                            Text="{Binding Source={x:Static sys:DateTime.Now}, Mode=OneWay, StringFormat='dd.MM.yyyy'}" />
                         <TextBox
                             x:Name="Nurse"
                             Grid.Row="2"
