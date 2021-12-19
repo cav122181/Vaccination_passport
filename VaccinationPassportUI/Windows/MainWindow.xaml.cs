@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using Vaccination_passport.Models;
+using VaccinationPassportLibrary.DB;
+using VaccinationPassportLibrary.Models;
 
-namespace Vaccination_passport.Windows
+namespace VaccinationPassportUI.Windows
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -24,17 +25,23 @@ namespace Vaccination_passport.Windows
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            string name = SearchBox.Text;
-            DataAccess dataAccess = (DataAccess)App.Current.TryFindResource("SuperDB");
-            List<Person> people = dataAccess.GetPeople($"SELECT * FROM [Person] WHERE [full_name]='{name}';");
+            string sql;
+            string id = SearchBox.Text;
+            DataAccess dataAccess = (DataAccess) App.Current.TryFindResource("SuperDB");
+
+            sql = $"SELECT * FROM [Person] WHERE [ID]={id};";
+            List<Person> people = dataAccess.GetPeople(sql, DisplayMsgBox);
 
 
-            //MessageBox.Show(person.ToString());
-            PassportWindow PassWindow = new PassportWindow(people[0]);
-            PassWindow.Resources["currentPerson"] = people[0];
-            PassWindow.Show();
+           
+            //перевірити, коли немає користувача
+            if (people.Count > 0)
+            {
+                PassportWindow PassWindow = new PassportWindow(people [0]);
+                PassWindow.Resources ["currentPerson"] = people [0];
+                PassWindow.Show();
 
-
+            }
         }
 
         private void TestButton_Click(object sender, RoutedEventArgs e)

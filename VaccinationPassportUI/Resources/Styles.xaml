@@ -3,7 +3,7 @@
 
 
     <Style TargetType="Grid">
-        <!--<Setter Property="ShowGridLines" Value="True"/>-->
+        <Setter Property="ShowGridLines" Value="True"/>
     </Style>
     <Style TargetType="Window">
         <Setter Property="Background" Value="#ededed"/>
