@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.OleDb;
-using System.IO;
-using System.Windows;
+using System.Diagnostics;
 using VaccinationPassportLibrary.Models;
 
-namespace VaccinationPassportLibrary.Database
+namespace VaccinationPassportLibrary.DB
 {
-    internal class DataAccess
+    public class DataAccess
     {
         private OleDbConnection Access { get; set; }
 
@@ -23,6 +20,8 @@ namespace VaccinationPassportLibrary.Database
             return projectDirectory;
         }
 
+        public delegate void NotifyUser(string message);
+
         public DataAccess()
         {
             string dbLoc = Path.Combine(GetProjectDirectory(), "PassVac.accdb");
@@ -30,7 +29,7 @@ namespace VaccinationPassportLibrary.Database
         }
         //тут будуть методи
 
-        public List<Person> GetPeople(string SQL) ///
+        public List<Person> GetPeople(string SQL, NotifyUser notifyUser) ///
         {
 
             bool ToCloseOrNotToClose;
@@ -51,7 +50,8 @@ namespace VaccinationPassportLibrary.Database
 
                 if (!reader.HasRows)
                 {
-                    MessageBox.Show("Така особа не зареєстрована");
+                    notifyUser("Така особа не зареєстрована!");
+                    //MessageBox.Show("Така особа не зареєстрована");
                     return new List<Person>();
 
                 }
@@ -64,15 +64,18 @@ namespace VaccinationPassportLibrary.Database
                     person.AmbCard = (string) DBNullCheck(reader ["amb_card"]);
                     person.Doctor = (string) DBNullCheck(reader ["doctor"]);
                     person.Polyclinic = (string) DBNullCheck(reader ["polyclinic"]);
-                    person.DeclDate = (DateTime?) DBNullCheck(reader ["declaration_date"]);
+                    person.DeclarationDate = (DateTime?) DBNullCheck(reader ["declaration_date"]);
                     people.Add(person);
                 }
 
             }
             catch (OleDbException e)
             {
-                MessageBox.Show("Не вдалося дістати особу" +
-                    e.ToString());
+                string msg = "Не вдалося дістати особу";
+                Debug.WriteLine(msg + e.Message);
+                notifyUser(msg);
+                //MessageBox.Show("Не вдалося дістати особу" +
+                //    e.ToString());
                 return new List<Person>();
             }
             finally
@@ -83,9 +86,9 @@ namespace VaccinationPassportLibrary.Database
             }
             return people;
         }
-        public List<Vaccination> GetVaccinations(string SQL)
-        {
 
+        public List<Vaccination> GetVaccinations(string SQL, NotifyUser notifyUser)
+        {
 
             OleDbCommand rqst = new OleDbCommand(SQL, Access);
             List<Vaccination> vaccinations = new List<Vaccination>();
@@ -96,9 +99,9 @@ namespace VaccinationPassportLibrary.Database
 
                 if (!reader.HasRows)
                 {
-                    MessageBox.Show("Така особа не зареєстрована");
+                    notifyUser("Така особа не зареєстрована");
+                    //MessageBox.Show("Така особа не зареєстрована");
                     return new List<Vaccination>();
-
                 }
                 while (reader.Read())
                 {
@@ -115,8 +118,8 @@ namespace VaccinationPassportLibrary.Database
                     personId = (int) DBNullCheck(reader ["person_id"]);
 
                     //
-                    vaccination.Person = GetPeople($"SELECT * FROM [Person] WHERE [person_id]={personId}") [0];
-                    vaccination.Disease = GetDiseases($"") [0];
+                    vaccination.Person = GetPeople($"SELECT * FROM [Person] WHERE [person_id]={personId}", notifyUser) [0];
+                    vaccination.Disease = GetDiseases($"", notifyUser) [0];
 
                     //vaccination.Person 0 
                     //vaccination.Disease 
@@ -127,8 +130,12 @@ namespace VaccinationPassportLibrary.Database
             }
             catch (OleDbException e)
             {
-                MessageBox.Show("Не вдалося дістати про щеплення" +
-                    e.ToString());
+                string msg = "Не вдалося дістати дані про щеплення";
+
+                notifyUser(msg);
+
+                Debug.WriteLine(msg + " " + e.Message);
+
                 return new List<Vaccination>();
             }
             finally
@@ -137,7 +144,7 @@ namespace VaccinationPassportLibrary.Database
             }
             return vaccinations;
         }
-        public List<Disease> GetDiseases(string SQL)
+        public List<Disease> GetDiseases(string SQL, NotifyUser notifyUser)
         {
 
             bool ToCloseOrNotToClose;
@@ -151,14 +158,18 @@ namespace VaccinationPassportLibrary.Database
 
             OleDbCommand rqst = new OleDbCommand(SQL, Access);
             List<Disease> diseases = new List<Disease>();
+
             try
             {
                 OleDbDataReader reader = rqst.ExecuteReader();
-                //перевіряємо, чи є які-небудь записи 
 
+                //перевіряємо, чи є які-небудь записи 
                 if (!reader.HasRows)
                 {
-                    MessageBox.Show("Таке захворювання не зареєстроване");
+                    string msg = "Таке захворювання не зареєстроване";
+                    notifyUser(msg);
+                    //MessageBox.Show("Таке захворювання не зареєстроване");
+                    Debug.WriteLine($"{msg} {reader}");
                     return new List<Disease>();
 
                 }
@@ -166,8 +177,8 @@ namespace VaccinationPassportLibrary.Database
                 {
                     Disease disease = new Disease();
                     disease.ID = (int) DBNullCheck(reader ["id"]);
-                    disease.DisName = (string) DBNullCheck(reader ["dis_name"]);
-                    disease.VaccineNumber = (int) DBNullCheck(reader ["vaccination_number"]);
+                    disease.DiseaseName = (string) DBNullCheck(reader ["dis_name"]);
+                    disease.MaxVaccinationNumber = (int) DBNullCheck(reader ["vaccination_number"]);
 
                     diseases.Add(disease);
                 }
@@ -175,8 +186,9 @@ namespace VaccinationPassportLibrary.Database
             }
             catch (OleDbException e)
             {
-                MessageBox.Show("Не вдалося дістати про щеплення" +
-                    e.ToString());
+                string msg = "Не вдалося дістати дані про щеплення";
+                notifyUser(msg);
+                Debug.WriteLine(msg);
                 return new List<Disease>();
             }
             finally
@@ -187,7 +199,7 @@ namespace VaccinationPassportLibrary.Database
             return diseases;
         }
 
-        public bool Insert(string SQL)
+        public bool Insert(string SQL, NotifyUser notifyUser)
         {
             Access.Open();
             OleDbCommand cmd = new OleDbCommand(SQL, Access);
@@ -201,8 +213,11 @@ namespace VaccinationPassportLibrary.Database
             }
             catch (OleDbException e)
             {
-                MessageBox.Show("Помилка запису" +
-                    e.ToString());
+                string msg = "Помилка запису";
+                notifyUser(msg);
+                Debug.WriteLine(msg + e.Message);
+                //MessageBox.Show("Помилка запису" +
+                //    e.ToString());
 
                 return false;
             }

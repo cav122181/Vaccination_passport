@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 
-namespace VaccinationLibrary.User_Controls
+namespace VaccinationPassportUI.User_Controls
 {
     /// <summary>
     /// Interaction logic for PersonDataBlock.xaml

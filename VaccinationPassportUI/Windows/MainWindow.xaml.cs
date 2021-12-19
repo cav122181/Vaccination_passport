@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using VaccinationPassportUI.Models;
+using VaccinationPassportLibrary.DB;
+using VaccinationPassportLibrary.Models;
 
-namespace VaccinationLibrary.Windows
+namespace VaccinationPassportUI.Windows
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

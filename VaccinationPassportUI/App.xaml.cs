@@ -1,6 +1,7 @@
-﻿using System.Windows;
+﻿global using static VaccinationPassportUI.Helpers.Helper;
 
-namespace VaccinationLibrary
+using System.Windows;
+namespace VaccinationPassportUI
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Windows;
-using VaccinationPassportUI.Models;
+using VaccinationPassportLibrary.DB;
+using VaccinationPassportLibrary.Models;
 
-namespace VaccinationLibrary.Windows
+namespace VaccinationPassportUI.Windows
 {
     /// <summary>
     /// Interaction logic for NewPassWindow.xaml
@@ -25,6 +26,9 @@ namespace VaccinationLibrary.Windows
 
         private void CreateNewPassportButton_Click(object sender, RoutedEventArgs e)
         {
+
+            string sql;
+
             Person person = new Person();
             string fullName = FullName.Text;
             DateTime birthDate = DateTime.Parse(BirthDate.Text);
@@ -45,18 +49,22 @@ namespace VaccinationLibrary.Windows
 
             //записуємо особу
             DataAccess dataAccess = (DataAccess) App.Current.TryFindResource("SuperDB");
-            bool status = dataAccess.Insert($"INSERT INTO [Person] ([full_name], [birth_date], [amb_card], " +
+
+            sql = $"INSERT INTO [Person] ([full_name], [birth_date], [amb_card], " +
                 $"[doctor], [polyclinic], [declaration_date])" +
                 $" VALUES ('{fullName}', '{birthDate}', '{ambCard}'," +
-                $" '{doctor}', '{polyclinic}', '{declDate}');");
+                $" '{doctor}', '{polyclinic}', '{declDate}');";
+
+            bool status = dataAccess.Insert(sql, DisplayMsgBox);
 
             if (status) MessageBox.Show("Запис створено");
             else MessageBox.Show("Wa wa waaa");
 
             //записуємо гепатит
-            status = dataAccess.Insert($"INSERT INTO [Vaccination] " +
+            sql = $"INSERT INTO [Vaccination] " +
                 $"([disease_id], [patient_id], [vaccination_date], [nurse_full_name], [vaccine_name], [dose], [expiration_date], [serial_number], [side_effects])" +
-                $"VALUES (1, 1,'{vacDate}','{nurseName}','{vacName}', {dose},'{expDate}','{serialNumber}','{sideEff}');");
+                $"VALUES (1, 1,'{vacDate}','{nurseName}','{vacName}', {dose},'{expDate}','{serialNumber}','{sideEff}');";
+            status = dataAccess.Insert(sql, DisplayMsgBox);
 
             if (status) MessageBox.Show("Запис гепатиту створено");
             else MessageBox.Show("Wa wa wa waaa");

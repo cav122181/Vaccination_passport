@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows;
-using VaccinationPassportUI.Models;
+using VaccinationPassportLibrary.Models;
 
-namespace VaccinationLibrary.Windows
+namespace VaccinationPassportUI.Windows
 {
     /// <summary>
     /// Interaction logic for PassportWindow.xaml
@@ -22,7 +22,7 @@ namespace VaccinationLibrary.Windows
             PersonData.AmbCardBox.Text = currentPerson.AmbCard;
             PersonData.DoctorBox.Text = currentPerson.Doctor;
             PersonData.ClinicBox.Text = currentPerson.Polyclinic;
-            PersonData.DeclarationDateBox.Text = Convert.ToString(currentPerson.DeclDate);
+            PersonData.DeclarationDateBox.Text = Convert.ToString(currentPerson.DeclarationDate);
 
 
         }

@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VaccinationLibrary\VaccinationPassportLibrary.csproj" />
+    <ProjectReference Include="..\VaccinationPassportLibrary\VaccinationPassportLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

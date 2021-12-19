@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace VaccinationPassportLibrary.Models
+﻿namespace VaccinationPassportLibrary.Models
 {
-    internal class Vaccination
+    public class Vaccination
     {
         public int ID { get; set; }
         public Person Person { get; set; }

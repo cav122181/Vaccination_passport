@@ -1,12 +1,12 @@
 ﻿
 <Window
-    x:Class="VaccinationLibrary.Windows.NewPassWindow"
+    x:Class="VaccinationPassportUI.Windows.NewPassWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:VaccinationLibrary.Windows"
+    xmlns:local="clr-namespace:VaccinationPassportUI.Windows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:uc="clr-namespace:VaccinationLibrary.User_Controls"
+    xmlns:uc="clr-namespace:VaccinationPassportUI.User_Controls"
     Title="Створення нового паспорту"
     Width="800"
     Height="450"
