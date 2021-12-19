@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vaccination_passport", "Vaccination_passport\Vaccination_passport.csproj", "{5A6478D5-1DEB-42CD-A7C3-0450C83484C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VaccinationPassportUI", "Vaccination_passport\VaccinationPassportUI.csproj", "{5A6478D5-1DEB-42CD-A7C3-0450C83484C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VaccinationPassportLibrary", "VaccinationLibrary\VaccinationPassportLibrary.csproj", "{4F705240-4B4A-4B50-BCA8-DFE7785C9DC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{5A6478D5-1DEB-42CD-A7C3-0450C83484C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A6478D5-1DEB-42CD-A7C3-0450C83484C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A6478D5-1DEB-42CD-A7C3-0450C83484C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F705240-4B4A-4B50-BCA8-DFE7785C9DC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F705240-4B4A-4B50-BCA8-DFE7785C9DC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F705240-4B4A-4B50-BCA8-DFE7785C9DC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F705240-4B4A-4B50-BCA8-DFE7785C9DC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

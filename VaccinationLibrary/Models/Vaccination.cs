@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vaccination_passport.Models
+namespace VaccinationPassportLibrary.Models
 {
     internal class Vaccination
     {

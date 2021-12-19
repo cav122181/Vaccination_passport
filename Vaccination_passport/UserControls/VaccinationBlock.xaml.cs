@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Vaccination_passport.User_Controls
+namespace VaccinationLibrary.User_Controls
 {
     /// <summary>
     /// Interaction logic for VaccinationBlock.xaml

@@ -1,4 +1,4 @@
-﻿namespace Vaccination_passport.Models
+﻿namespace VaccinationPassportLibrary.Models
 {
     internal class Disease
     {

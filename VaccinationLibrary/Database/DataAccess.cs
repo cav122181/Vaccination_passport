@@ -4,13 +4,18 @@ using System.Data;
 using System.Data.OleDb;
 using System.IO;
 using System.Windows;
+using VaccinationPassportLibrary.Models;
 
-namespace Vaccination_passport.Models
+namespace VaccinationPassportLibrary.Database
 {
     internal class DataAccess
     {
         private OleDbConnection Access { get; set; }
 
+        /// <summary>
+        /// Допомагає знайти папку проєкту
+        /// </summary>
+        /// <returns>Повний шлях до головної теки проєкту</returns>
         string GetProjectDirectory()
         {
             string workingDirectory = Environment.CurrentDirectory;
@@ -21,7 +26,7 @@ namespace Vaccination_passport.Models
         public DataAccess()
         {
             string dbLoc = Path.Combine(GetProjectDirectory(), "PassVac.accdb");
-            this.Access = new OleDbConnection(@$"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = {dbLoc}");
+            Access = new OleDbConnection(@$"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = {dbLoc}");
         }
         //тут будуть методи
 
