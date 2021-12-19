@@ -24,7 +24,8 @@ namespace VaccinationPassportLibrary.DB
 
         public DataAccess()
         {
-            string dbLoc = Path.Combine(GetProjectDirectory(), "PassVac.accdb");
+            
+            string dbLoc = Path.Combine(Directory.GetParent(GetProjectDirectory()).FullName, "VaccinationPassportLibrary", "PassVac.accdb");
             Access = new OleDbConnection(@$"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = {dbLoc}");
         }
         //тут будуть методи
@@ -58,13 +59,13 @@ namespace VaccinationPassportLibrary.DB
                 while (reader.Read())
                 {
                     Person person = new Person();
-                    person.ID = (int) DBNullCheck(reader ["id"]);
-                    person.FullName = (string) DBNullCheck(reader ["full_name"]);
-                    person.BirthDate = (DateTime) DBNullCheck(reader ["birth_date"]);
-                    person.AmbCard = (string) DBNullCheck(reader ["amb_card"]);
-                    person.Doctor = (string) DBNullCheck(reader ["doctor"]);
-                    person.Polyclinic = (string) DBNullCheck(reader ["polyclinic"]);
-                    person.DeclarationDate = (DateTime?) DBNullCheck(reader ["declaration_date"]);
+                    person.ID = (int) DBNullCheck(reader ["ID"]);
+                    person.FullName = (string) DBNullCheck(reader ["FullName"]);
+                    person.BirthDate = (DateTime) DBNullCheck(reader ["BirthDate"]);
+                    person.AmbCard = (string) DBNullCheck(reader ["AmbCard"]);
+                    person.Doctor = (string) DBNullCheck(reader ["Doctor"]);
+                    person.Polyclinic = (string) DBNullCheck(reader ["Polyclinic"]);
+                    person.DeclarationDate = (DateTime?) DBNullCheck(reader ["DeclarationDate"]);
                     people.Add(person);
                 }
 
@@ -105,24 +106,30 @@ namespace VaccinationPassportLibrary.DB
                 }
                 while (reader.Read())
                 {
-                    int personId;
+                    int personId, vaccineId;
+
                     Vaccination vaccination = new Vaccination();
-                    vaccination.ID = (int) DBNullCheck(reader ["id"]);
-                    vaccination.VacDate = (DateTime?) DBNullCheck(reader ["vaccination_date"]);
-                    vaccination.Nurse = (string) DBNullCheck(reader ["nurse_full_name"]);
-                    vaccination.VacName = (string) DBNullCheck(reader ["vaccine_name"]);
-                    vaccination.Dose = (float) DBNullCheck(reader ["dose"]);
-                    vaccination.ExpirationDate = (DateTime?) DBNullCheck(reader ["expiration_date"]);
-                    vaccination.SerialNumber = (string) DBNullCheck(reader ["serial_number"]);
-                    vaccination.SideEff = (string) DBNullCheck(reader ["side_effects"]);
-                    personId = (int) DBNullCheck(reader ["person_id"]);
+                    vaccination.ID = (int) DBNullCheck(reader ["Id"]);
 
-                    //
-                    vaccination.Person = GetPeople($"SELECT * FROM [Person] WHERE [person_id]={personId}", notifyUser) [0];
-                    vaccination.Disease = GetDiseases($"", notifyUser) [0];
+                    vaccination.NurseFullName = (string) DBNullCheck(reader ["NurseFullName"]);
 
-                    //vaccination.Person 0 
-                    //vaccination.Disease 
+                    vaccination.VaccinationNumber = (int) DBNullCheck(reader ["VaccinationNumber"]);
+
+                    vaccination.ExpirationDate = (DateTime?) DBNullCheck(reader ["ExpirationDate"]);
+
+                    vaccination.SerialNumber = (string) DBNullCheck(reader ["SerialNumber"]);
+
+                    vaccination.SideEffects = (string) DBNullCheck(reader ["SideEffects"]);
+
+                    personId = (int) DBNullCheck(reader ["PersonId"]);
+                    vaccineId = (int) DBNullCheck(reader ["VaccineId"]);
+
+                    //vaccination.Person = (DateTime?) DBNullCheck(reader ["vaccination_date"]);
+                    //vaccination.Vaccine = (string) DBNullCheck(reader ["vaccine_name"]);
+
+                    vaccination.Person = GetPeople($"SELECT * FROM [Person] WHERE [ID]={personId}", notifyUser) [0];
+                    vaccination.Vaccine = GetVaccines($"SELECT * FROM [Vaccine] WHERE [ID]={vaccineId}", notifyUser) [0];
+
 
                     vaccinations.Add(vaccination);
                 }
@@ -144,6 +151,66 @@ namespace VaccinationPassportLibrary.DB
             }
             return vaccinations;
         }
+
+        private List<Vaccine> GetVaccines(string SQL, NotifyUser notifyUser)
+        {
+            bool ToCloseOrNotToClose;
+            if (Access.State == ConnectionState.Open)
+                ToCloseOrNotToClose = false;
+            else
+            {
+                Access.Open();
+                ToCloseOrNotToClose = true;
+            }
+
+            OleDbCommand rqst = new OleDbCommand(SQL, Access);
+            List<Vaccine> vaccines = new List<Vaccine>();
+
+            try
+            {
+                OleDbDataReader reader = rqst.ExecuteReader();
+
+                //перевіряємо, чи є які-небудь записи 
+                if (!reader.HasRows)
+                {
+                    string msg = "Таку вакцину не знайдено";
+                    notifyUser(msg);
+                    //MessageBox.Show("Таке захворювання не зареєстроване");
+                    Debug.WriteLine($"{msg} {reader}");
+                    return new List<Vaccine>();
+
+                }
+                while (reader.Read())
+                {
+                    Vaccine vaccine = new Vaccine();
+                    vaccine.Id = (int) DBNullCheck(reader ["ID"]);
+                    vaccine.VaccineName = (string) DBNullCheck(reader ["VaccineName"]);
+                    vaccine.Dose = (float) DBNullCheck(reader ["Dose"]);
+
+                    int diseaseId = (int)DBNullCheck(reader ["DiseaseId"]);
+
+                    string sql = $"SELECT * FROM [Disease] WHERE [id] = {diseaseId}";
+                    vaccine.Disease = GetDiseases(sql, notifyUser)[0];
+
+                    vaccines.Add(vaccine);
+                }
+
+            }
+            catch (OleDbException e)
+            {
+                string msg = "Не вдалося дістати дані про щеплення";
+                notifyUser(msg);
+                Debug.WriteLine(msg);
+                return new List<Vaccine>();
+            }
+            finally
+            {
+                if (ToCloseOrNotToClose == true)
+                    Access.Close();
+            }
+            return vaccines;
+        }
+
         public List<Disease> GetDiseases(string SQL, NotifyUser notifyUser)
         {
 

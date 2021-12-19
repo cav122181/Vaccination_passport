@@ -3,14 +3,14 @@
     public class Vaccination
     {
         public int ID { get; set; }
-        public Person Person { get; set; }
-        public Disease Disease { get; set; }
-        public DateTime? VacDate { get; set; }
-        public string Nurse { get; set; }
-        public string VacName { get; set; }
-        public float Dose { get; set; }
+
+        public Vaccine Vaccine { get; set; }
+        public Person? Person { get; set; }
+
+        public string NurseFullName { get; set; }
+        public int VaccinationNumber { get; set; }
         public DateTime? ExpirationDate { get; set; }
         public string SerialNumber { get; set; }
-        public string SideEff { get; set; }
+        public string SideEffects { get; set; }
     }
 }

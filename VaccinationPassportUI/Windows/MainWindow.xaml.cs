@@ -25,12 +25,15 @@ namespace VaccinationPassportUI.Windows
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
+            string sql;
             string id = SearchBox.Text;
             DataAccess dataAccess = (DataAccess) App.Current.TryFindResource("SuperDB");
-            List<Person> people = dataAccess.GetPeople($"SELECT * FROM [Person] WHERE [ID]={id};");
+
+            sql = $"SELECT * FROM [Person] WHERE [ID]={id};";
+            List<Person> people = dataAccess.GetPeople(sql, DisplayMsgBox);
 
 
-            //MessageBox.Show(person.ToString());
+           
             //перевірити, коли немає користувача
             if (people.Count > 0)
             {
