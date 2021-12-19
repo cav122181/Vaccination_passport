@@ -152,7 +152,7 @@ namespace VaccinationPassportLibrary.DB
             return vaccinations;
         }
 
-        private List<Vaccine> GetVaccines(string SQL, NotifyUser notifyUser)
+        public List<Vaccine> GetVaccines(string SQL, NotifyUser notifyUser)
         {
             bool ToCloseOrNotToClose;
             if (Access.State == ConnectionState.Open)
@@ -185,11 +185,11 @@ namespace VaccinationPassportLibrary.DB
                     Vaccine vaccine = new Vaccine();
                     vaccine.Id = (int) DBNullCheck(reader ["ID"]);
                     vaccine.VaccineName = (string) DBNullCheck(reader ["VaccineName"]);
-                    vaccine.Dose = (float) DBNullCheck(reader ["Dose"]);
+                    vaccine.Dose = (double) DBNullCheck(reader ["Dose"]);
 
                     int diseaseId = (int)DBNullCheck(reader ["DiseaseId"]);
 
-                    string sql = $"SELECT * FROM [Disease] WHERE [id] = {diseaseId}";
+                    string sql = $"SELECT * FROM [Disease] WHERE [ID] = {diseaseId}";
                     vaccine.Disease = GetDiseases(sql, notifyUser)[0];
 
                     vaccines.Add(vaccine);
@@ -244,8 +244,9 @@ namespace VaccinationPassportLibrary.DB
                 {
                     Disease disease = new Disease();
                     disease.ID = (int) DBNullCheck(reader ["id"]);
-                    disease.DiseaseName = (string) DBNullCheck(reader ["dis_name"]);
-                    disease.MaxVaccinationNumber = (int) DBNullCheck(reader ["vaccination_number"]);
+                    disease.DiseaseName = (string) DBNullCheck(reader ["DiseaseName"]);
+                    disease.MaxVaccinationNumber = (int) DBNullCheck(reader ["MaxVaccinationNumber"]);
+                    disease.Mandatory = (bool) DBNullCheck(reader ["Mandatory"]);
 
                     diseases.Add(disease);
                 }
