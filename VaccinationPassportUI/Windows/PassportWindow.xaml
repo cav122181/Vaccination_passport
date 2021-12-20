@@ -1,40 +1,105 @@
-﻿<Window x:Class="VaccinationPassportUI.Windows.PassportWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:VaccinationPassportUI.Windows"
-        xmlns:uc="clr-namespace:VaccinationPassportUI.User_Controls"
-        mc:Ignorable="d"
-        DataContext="{DynamicResource currentPerson}"
-        Title="PassportWindow" Height="450" Width="800" Icon="{StaticResource Logo}">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="15"/>
+﻿<Window
+    x:Class="VaccinationPassportUI.Windows.PassportWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:VaccinationPassportUI.Windows"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+    xmlns:uc="clr-namespace:VaccinationPassportUI.User_Controls"
+    Title="Щеплення"
+    Width="800"
+    Height="450"
+    DataContext="{DynamicResource currentPerson}"
+    Icon="{StaticResource Logo}"
+    Loaded="Window_Loaded"
+    mc:Ignorable="d">
+    <TabControl>
+        <TabItem Header="Планові щеплення">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="15" />
 
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="15"/>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="15" />
 
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="15"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="15"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="15" />
 
 
-        </Grid.RowDefinitions>
-        <uc:PersonDataBlock x:Name="PersonData" Grid.Row="1" Grid.Column="1"/>
-        <ScrollViewer Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Background="#ededed">
-            <StackPanel>
-                <uc:VaccinationBlock Margin="0,10,0,0"/>
-                <uc:VaccinationBlock Margin="0,10,0,0"/>
-                <uc:VaccinationBlock Margin="0,10,0,0"/>
-                <uc:VaccinationBlock Margin="0,10,0,0"/>
-            </StackPanel>
-            
+                </Grid.RowDefinitions>
+                <uc:PersonDataBlock
+                    x:Name="PersonData"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    DataContext="{Binding Path=.}" />
+                <uc:SaveAndQrButtons
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    VerticalAlignment="Center" />
+                <ScrollViewer
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Margin="0,20,0,0"
+                    Background="#ededed">
+                    <ItemsControl
+                        x:Name="PlanVacc"
+                        Margin="0,20,0,0"
+                        ItemTemplate="{StaticResource VacTemplate}"
+                        ItemsSource="{DynamicResource PlanVaccinations}">
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Загальні щеплення">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="15" />
 
-        </ScrollViewer>
-    </Grid>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="15" />
+
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="15" />
+
+
+                </Grid.RowDefinitions>
+                <!--  Перейменувати блок інф про пацієнта  -->
+                <uc:PersonDataBlock
+                    x:Name="PersonData2"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    DataContext="{Binding Path=.}" />
+                <uc:SaveAndQrButtons
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    VerticalAlignment="Center" />
+                <ScrollViewer
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Margin="0,20,0,0"
+                    Background="#ededed">
+                    <ItemsControl
+                        x:Name="OtherVacc"
+                        Margin="0,20,0,0"
+                        ItemTemplate="{StaticResource VacTemplate}"
+                        ItemsSource="{DynamicResource OtherVaccinations}" />
+
+                </ScrollViewer>
+            </Grid>
+        </TabItem>
+    </TabControl>
+
 </Window>

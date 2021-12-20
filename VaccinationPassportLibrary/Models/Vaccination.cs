@@ -7,6 +7,7 @@
         public Vaccine Vaccine { get; set; }
         public Person? Person { get; set; }
 
+        public DateTime? VaccinationDate { get; set; }
         public string NurseFullName { get; set; }
         public int VaccinationNumber { get; set; }
         public DateTime? ExpirationDate { get; set; }

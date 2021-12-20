@@ -11,6 +11,7 @@ namespace VaccinationPassportUI.Windows
     public partial class MainWindow : Window
     {
 
+
         public MainWindow()
         {
             InitializeComponent();
@@ -25,29 +26,56 @@ namespace VaccinationPassportUI.Windows
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            string sql;
-            string id = SearchBox.Text;
-            DataAccess dataAccess = (DataAccess) App.Current.TryFindResource("SuperDB");
-
-            sql = $"SELECT * FROM [Person] WHERE [ID]={id};";
-            List<Person> people = dataAccess.GetPeople(sql, DisplayMsgBox);
 
 
-           
-            //перевірити, коли немає користувача
-            if (people.Count > 0)
+            if (PersonSearchBox.SelectedValue == null)
             {
-                PassportWindow PassWindow = new PassportWindow(people [0]);
-                PassWindow.Resources ["currentPerson"] = people [0];
-                PassWindow.Show();
-
+                DisplayMsgBox("Будь ласка, оберіть особу зі списку.");
+                return;
             }
+            string sql;
+            //string id = PersonSearchBox.Text;
+
+
+            //DataAccess dataAccess = (DataAccess) App.Current.TryFindResource("SuperDB");
+
+            //sql = $"SELECT * FROM [Person] WHERE [ID]={id};";
+            //List<Person> people = dataAccess.GetPeople(sql, DisplayMsgBox);
+
+
+
+            //перевірити, коли немає користувача
+            //if (people.Count > 0)
+            //{
+            //    PassportWindow PassWindow = new PassportWindow(people [0]);
+            //    PassWindow.Resources ["currentPerson"] = people [0];
+            //    PassWindow.Show();
+
+            //}
+
+            Person person = (Person) PersonSearchBox.SelectedItem;
+
+            PassportWindow PassWindow = new PassportWindow(person);
+            //PassWindow.Resources ["currentPerson"] = person;
+            PassWindow.Show();
         }
 
         private void TestButton_Click(object sender, RoutedEventArgs e)
         {
             PassportWindow PassWindow = new PassportWindow();
             PassWindow.Show();
+
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            string sql;
+
+            sql = "SELECT * FROM [Person]";
+            DataAccess dataAccess = (DataAccess) App.Current.FindResource("SuperDB");
+
+            List<Person> people = dataAccess.GetPeople(sql, DisplayMsgBox);
+            App.Current.Resources ["AllPeople"] = people;
 
         }
     }
