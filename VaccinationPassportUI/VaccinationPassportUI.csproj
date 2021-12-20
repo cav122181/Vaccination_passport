@@ -25,4 +25,9 @@
     <Resource Include="Images\Search.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ResourceDictionaries\" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
 </Project>

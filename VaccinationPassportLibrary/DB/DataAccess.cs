@@ -13,6 +13,9 @@ namespace VaccinationPassportLibrary.DB
         /// Допомагає знайти папку проєкту
         /// </summary>
         /// <returns>Повний шлях до головної теки проєкту</returns>
+        /// 
+
+
         string GetProjectDirectory()
         {
             string workingDirectory = Environment.CurrentDirectory;
@@ -20,11 +23,26 @@ namespace VaccinationPassportLibrary.DB
             return projectDirectory;
         }
 
+        public bool PersonExists(string ambCard, NotifyUser notifyUser)
+        {
+            string sql = $"SELECT * FROM [Person] WHERE [AmbCard] = '{ambCard}'";
+            List<Person> people = GetPeople(sql, notifyUser);
+
+            if (people.Count > 0)
+            {
+                notifyUser("Таку особу вже зареєстровано");
+                return true;
+
+            }
+
+            return false;
+        }
         public delegate void NotifyUser(string message);
+
 
         public DataAccess()
         {
-            
+
             string dbLoc = Path.Combine(Directory.GetParent(GetProjectDirectory()).FullName, "VaccinationPassportLibrary", "PassVac.accdb");
             Access = new OleDbConnection(@$"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = {dbLoc}");
         }
@@ -90,7 +108,14 @@ namespace VaccinationPassportLibrary.DB
 
         public List<Vaccination> GetVaccinations(string SQL, NotifyUser notifyUser)
         {
-
+            bool ToCloseOrNotToClose;
+            if (Access.State == ConnectionState.Open)
+                ToCloseOrNotToClose = false;
+            else
+            {
+                Access.Open();
+                ToCloseOrNotToClose = true;
+            }
             OleDbCommand rqst = new OleDbCommand(SQL, Access);
             List<Vaccination> vaccinations = new List<Vaccination>();
             try
@@ -100,7 +125,7 @@ namespace VaccinationPassportLibrary.DB
 
                 if (!reader.HasRows)
                 {
-                    notifyUser("Така особа не зареєстрована");
+                    notifyUser("Така вакцинація не зареєстрована");
                     //MessageBox.Show("Така особа не зареєстрована");
                     return new List<Vaccination>();
                 }
@@ -114,6 +139,8 @@ namespace VaccinationPassportLibrary.DB
                     vaccination.NurseFullName = (string) DBNullCheck(reader ["NurseFullName"]);
 
                     vaccination.VaccinationNumber = (int) DBNullCheck(reader ["VaccinationNumber"]);
+
+                    vaccination.VaccinationDate = (DateTime) DBNullCheck(reader ["VaccinationDate"]);
 
                     vaccination.ExpirationDate = (DateTime?) DBNullCheck(reader ["ExpirationDate"]);
 
@@ -147,7 +174,8 @@ namespace VaccinationPassportLibrary.DB
             }
             finally
             {
-                Access.Close();
+                if (ToCloseOrNotToClose == true)
+                    Access.Close();
             }
             return vaccinations;
         }
@@ -187,10 +215,10 @@ namespace VaccinationPassportLibrary.DB
                     vaccine.VaccineName = (string) DBNullCheck(reader ["VaccineName"]);
                     vaccine.Dose = (double) DBNullCheck(reader ["Dose"]);
 
-                    int diseaseId = (int)DBNullCheck(reader ["DiseaseId"]);
+                    int diseaseId = (int) DBNullCheck(reader ["DiseaseId"]);
 
                     string sql = $"SELECT * FROM [Disease] WHERE [ID] = {diseaseId}";
-                    vaccine.Disease = GetDiseases(sql, notifyUser)[0];
+                    vaccine.Disease = GetDiseases(sql, notifyUser) [0];
 
                     vaccines.Add(vaccine);
                 }
@@ -271,7 +299,7 @@ namespace VaccinationPassportLibrary.DB
         {
             Access.Open();
             OleDbCommand cmd = new OleDbCommand(SQL, Access);
-
+            string msg;
             try
             {
 
@@ -281,7 +309,7 @@ namespace VaccinationPassportLibrary.DB
             }
             catch (OleDbException e)
             {
-                string msg = "Помилка запису";
+                msg = "Помилка запису";
                 notifyUser(msg);
                 Debug.WriteLine(msg + e.Message);
                 //MessageBox.Show("Помилка запису" +

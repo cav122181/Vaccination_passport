@@ -11,6 +11,7 @@ namespace VaccinationPassportUI.Windows
     public partial class MainWindow : Window
     {
 
+
         public MainWindow()
         {
             InitializeComponent();
@@ -52,10 +53,10 @@ namespace VaccinationPassportUI.Windows
 
             //}
 
-            Person person = (Person)PersonSearchBox.SelectedItem;
+            Person person = (Person) PersonSearchBox.SelectedItem;
 
             PassportWindow PassWindow = new PassportWindow(person);
-            PassWindow.Resources ["currentPerson"] = person;
+            //PassWindow.Resources ["currentPerson"] = person;
             PassWindow.Show();
         }
 
@@ -75,7 +76,7 @@ namespace VaccinationPassportUI.Windows
 
             List<Person> people = dataAccess.GetPeople(sql, DisplayMsgBox);
             App.Current.Resources ["AllPeople"] = people;
-            
+
         }
     }
 }

@@ -12,6 +12,7 @@
     Height="450"
     DataContext="{DynamicResource currentPerson}"
     Icon="{StaticResource Logo}"
+    Loaded="Window_Loaded"
     mc:Ignorable="d">
     <TabControl>
         <TabItem Header="Планові щеплення">
@@ -26,7 +27,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="15" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="15" />
 
@@ -35,140 +36,24 @@
                 <uc:PersonDataBlock
                     x:Name="PersonData"
                     Grid.Row="1"
-                    Grid.Column="1" />
+                    Grid.Column="1"
+                    DataContext="{Binding Path=.}" />
+                <uc:SaveAndQrButtons
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    VerticalAlignment="Center" />
                 <ScrollViewer
                     Grid.Row="2"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
+                    Margin="0,20,0,0"
                     Background="#ededed">
-                    <ItemsControl x:Name="PlanVacc">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="15" />
-
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="15" />
-
-
-                                    </Grid.ColumnDefinitions>
-
-                                    <TextBox
-                                        Grid.Row="0"
-                                        Grid.Column="1"
-                                        Grid.ColumnSpan="7"
-                                        Style="{StaticResource AquaTextBox}"
-                                        Text="{Binding Path=.}" />
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        Style="{StaticResource FieldNameBlock}">
-                                        дата щеплення, вік
-                                    </TextBlock>
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        Grid.Column="2"
-                                        Style="{StaticResource FieldNameBlock}">
-                                        ПІБ медсестри
-                                    </TextBlock>
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        Grid.Column="3"
-                                        Style="{StaticResource FieldNameBlock}">
-                                        назва вакцини
-                                    </TextBlock>
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        Grid.Column="4"
-                                        Style="{StaticResource FieldNameBlock}">
-                                        уведена доза, мг
-                                    </TextBlock>
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        Grid.Column="5"
-                                        Style="{StaticResource FieldNameBlock}">
-                                        термін придатності
-                                    </TextBlock>
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        Grid.Column="6"
-                                        Style="{StaticResource FieldNameBlock}">
-                                        серійний номер
-                                    </TextBlock>
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        Grid.Column="7"
-                                        Style="{StaticResource FieldNameBlock}">
-                                        побічні реякції
-                                    </TextBlock>
-
-
-                                    <TextBox
-                                        x:Name="VacDate"
-                                        Grid.Row="2"
-                                        Grid.Column="1"
-                                        Style="{StaticResource FatTextBox}" />
-                                    <TextBox
-                                        x:Name="Nurse"
-                                        Grid.Row="2"
-                                        Grid.Column="2"
-                                        Style="{StaticResource FatTextBox}" />
-                                    <TextBox
-                                        x:Name="VacName"
-                                        Grid.Row="2"
-                                        Grid.Column="3"
-                                        Style="{StaticResource FatTextBox}" />
-                                    <TextBox
-                                        x:Name="Dose"
-                                        Grid.Row="2"
-                                        Grid.Column="4"
-                                        Style="{StaticResource FatTextBox}" />
-                                    <TextBox
-                                        x:Name="ExpDate"
-                                        Grid.Row="2"
-                                        Grid.Column="5"
-                                        Style="{StaticResource FatTextBox}" />
-                                    <TextBox
-                                        x:Name="SerialNumber"
-                                        Grid.Row="2"
-                                        Grid.Column="6"
-                                        Style="{StaticResource FatTextBox}" />
-                                    <TextBox
-                                        x:Name="SideEffects"
-                                        Grid.Row="2"
-                                        Grid.Column="7"
-                                        Style="{StaticResource FatTextBox}" />
-
-
-                                </Grid>
-                                <!--<uc:VaccinationBlock Title="{Binding}" Margin="0,10,0,0"/>-->
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                        <sys:String>fds</sys:String>
-                        <sys:String>asd</sys:String>
-                        <sys:String>sdf</sys:String>
+                    <ItemsControl
+                        x:Name="PlanVacc"
+                        Margin="0,20,0,0"
+                        ItemTemplate="{StaticResource VacTemplate}"
+                        ItemsSource="{DynamicResource PlanVaccinations}">
                     </ItemsControl>
-
-                    <!--<StackPanel>
-                        <uc:VaccinationBlock Margin="0,10,0,0"/>
-                        <uc:VaccinationBlock Margin="0,10,0,0"/>
-                        <uc:VaccinationBlock Margin="0,10,0,0"/>
-                        <uc:VaccinationBlock Margin="0,10,0,0"/>
-                    </StackPanel>-->
-
-
                 </ScrollViewer>
             </Grid>
         </TabItem>
@@ -184,7 +69,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="15" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="15" />
 
@@ -194,19 +79,23 @@
                 <uc:PersonDataBlock
                     x:Name="PersonData2"
                     Grid.Row="1"
-                    Grid.Column="1" />
+                    Grid.Column="1"
+                    DataContext="{Binding Path=.}" />
+                <uc:SaveAndQrButtons
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    VerticalAlignment="Center" />
                 <ScrollViewer
                     Grid.Row="2"
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
+                    Margin="0,20,0,0"
                     Background="#ededed">
-                    <StackPanel>
-                        <uc:VaccinationBlock Margin="0,10,0,0" />
-                        <uc:VaccinationBlock Margin="0,10,0,0" />
-                        <uc:VaccinationBlock Margin="0,10,0,0" />
-                        <uc:VaccinationBlock Margin="0,10,0,0" />
-                    </StackPanel>
-
+                    <ItemsControl
+                        x:Name="OtherVacc"
+                        Margin="0,20,0,0"
+                        ItemTemplate="{StaticResource VacTemplate}"
+                        ItemsSource="{DynamicResource OtherVaccinations}" />
 
                 </ScrollViewer>
             </Grid>

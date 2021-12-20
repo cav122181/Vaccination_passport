@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using VaccinationPassportLibrary.DB;
 using VaccinationPassportLibrary.Models;
@@ -8,36 +10,142 @@ namespace VaccinationPassportUI.Windows
     /// <summary>
     /// Interaction logic for NewPassWindow.xaml
     /// </summary>
+    /// 
     public partial class NewPassWindow : Window
     {
+        private DataAccess dataAccess;
+        public event EventHandler<EventArgs> CreateNewPassport;
+
+        public bool CheckPersonDataFilled()
+        {
+            Person person = (Person) this.DataContext;
+
+            var properties = from property in person.GetType().GetProperties()
+                             select property.GetValue(person);
+
+            //перевіримо, чи є пусті значення властивостей Person
+            bool hasEmptyValues = properties.Any((x) => (string.IsNullOrWhiteSpace(Convert.ToString(x))));
+
+            return !hasEmptyValues;
+
+            //List<string> texts = new List<string> {
+            //PersonData.FullNameBox.Text,
+            //PersonData.BirthDateBox.Text,
+            //PersonData.AmbCardBox.Text,
+            //PersonData.DoctorBox.Text,
+            //PersonData.ClinicBox.Text,
+            //PersonData.DeclarationDateBox.Text
+            //};
+
+            //if (texts.Contains(""))
+            //    return false;
+
+            //return true;
+
+        }
+
+        public bool checkDiseaseFilled(Disease disease)
+        {
+            var propertiesValues = from property in disease.GetType().GetProperties()
+                                   select property.GetValue(disease);
+
+            bool hasEmptyValues = propertiesValues.Any((x) => (string.IsNullOrWhiteSpace(Convert.ToString(x))));
+            return !hasEmptyValues;
+        }
+
+        //public bool checkPropertiesFilled<T>(T model)
+
+        //{
+        //    var propertiesValues = from property in model.GetType().GetProperties()
+        //                           select property.GetValue(model);
+
+        //    foreach (var propertyValue in propertiesValues)
+        //    {
+        //        if (propertyValue is Vaccine)
+        //        {
+
+        //        }
+        //    }
+        //}
+
+
+
+
+        public bool CheckVaccineFilled(Vaccine vaccine)
+        {
+            var propertiesValues = from property in vaccine.GetType().GetProperties()
+                                   where property.PropertyType != typeof(Person)
+                                   select property.GetValue(vaccine);
+            foreach (var propertyValue in propertiesValues)
+            {
+                if (propertyValue is Disease)
+                {
+                    if (!checkDiseaseFilled((Disease) propertyValue))
+                    {
+                        return false;
+                    }
+                }
+
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(Convert.ToString(propertyValue)))
+                     {
+                        return false;
+
+
+
+                    }
+                }
+            }
+            //якщо все пройшло успішно, підтвердити перевірку true;
+            return true;
+        }
+
+        public bool CheckVaccinationsFilled()
+        {
+            List<Vaccination> firstVaccinations = (List<Vaccination>) this.Resources ["FirstVaccinations"];
+            
+            foreach (var vaccination in firstVaccinations)
+            {
+                var propertiesValues = from property in vaccination.GetType().GetProperties()
+                                       where property.PropertyType != typeof(Person)
+                                       select property.GetValue(vaccination);
+
+                //перевіримо, чи є пусті значення властивостей Vaccination
+
+                foreach (var propertyValue in propertiesValues)
+                {
+                    if (propertyValue is Vaccine)
+                    {
+                        if (!CheckVaccineFilled((Vaccine) propertyValue))
+                        {
+                            return false;
+                        }
+                        
+                    }
+                    else
+                    {
+                        if (string.IsNullOrWhiteSpace(Convert.ToString(propertyValue)))
+                        {
+                            return false;
+
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Потребує допрацювання
         /// </summary>
+        /// 
+
         public NewPassWindow()
         {
             InitializeComponent();
 
-            string sql;
-
-            DataAccess dataAccess = (DataAccess) App.Current.TryFindResource("SuperDB");
-            List<Vaccination> FirstVaccinations = new();
-
-            //продумати кращий варіянт запиту
-            sql = $"SELECT * FROM [Vaccine] WHERE [VaccineName] = 'ГепаВак'";
-            // !!!!!!!!!!!!!!!додати перевірку 
-            Vaccine hepatitisVaccine = dataAccess.GetVaccines(sql, DisplayMsgBox) [0];
-            Vaccination hepatitisVaccination = new Vaccination { VaccinationNumber = 1, Vaccine = hepatitisVaccine };
-
-
-            sql = $"SELECT * FROM [Vaccine] WHERE [VaccineName] = 'БЦЖ'";
-            Vaccine tuberculosisVaccine = dataAccess.GetVaccines(sql, DisplayMsgBox) [0];
-            Vaccination tuberculosisVaccination = new Vaccination { VaccinationNumber = 1, Vaccine = tuberculosisVaccine };
-
-            FirstVaccinations.Add(hepatitisVaccination);
-            FirstVaccinations.Add(tuberculosisVaccination);
-
-            this.Resources ["FirstVaccinations"] = FirstVaccinations;
         }
 
 
@@ -48,39 +156,14 @@ namespace VaccinationPassportUI.Windows
             //mainWindow.Show();
         }
 
-        private void CreateNewPassportButton_Click(object sender, RoutedEventArgs e)
+        bool CreateVaccinations(Person person)
         {
-
+            //DataAccess dataAccess = (DataAccess) App.Current.FindResource("SuperDB");
+            List<Vaccination> vaccinations = (List<Vaccination>) this.Resources ["FirstVaccinations"];
             string sql;
-            DataAccess dataAccess = (DataAccess)App.Current.FindResource("SuperDB");
-
-            string fullName = PersonData.FullNameBox.Text;
-            string birthDate = PersonData.BirthDateBox.Text;
-            string ambCard = PersonData.AmbCardBox.Text;
-            string doctor = PersonData.DoctorBox.Text;
-            string polyclinic = PersonData.ClinicBox.Text;
-            string declarationDate = PersonData.DeclarationDateBox.Text;
- 
-
-            sql = $"INSERT INTO [Person] ([FullName], [BirthDate], [AmbCard], " +
-            $"[Doctor], [Polyclinic], [DeclarationDate])" +
-            $" VALUES ('{fullName}', '{birthDate}', '{ambCard}'," +
-            $" '{doctor}', '{polyclinic}', '{declarationDate}');";
-
-            //створюємо особу
-            bool res = dataAccess.Insert(sql, DisplayMsgBox);
-
-            //перевірка на помилки
-            if (!res)
-                return;
-
-            //дістанемо особу за амбулаторною карткою
-            sql = $"SELECT * FROM [Person] WHERE [AmbCard] = '{ambCard}'";
-
-            Person? person = dataAccess.GetPeople(sql, DisplayMsgBox)?[0];
+            bool res = true;
 
             //винести в окремий метод
-            List<Vaccination> vaccinations = (List<Vaccination>) this.Resources ["FirstVaccinations"];
             foreach (var vac in vaccinations)
             {
 
@@ -103,54 +186,118 @@ namespace VaccinationPassportUI.Windows
                 if (!res)
                 {
                     DisplayMsgBox("Щось пішло супернетак");
+                    res = false;
                     break;
-                }    
+                }
 
             }
+            return res;
+        }
 
-            /*
-            Person person = new Person();
-            string fullName = FullName.Text;
-            DateTime birthDate = DateTime.Parse(BirthDate.Text);
-            string ambCard = AmbCard.Text;
-            string doctor = Doctor.Text;
-            string polyclinic = Clinic.Text;
-            DateTime declarationDate = DateTime.Parse(DeclarationDate.Text);
+        Person? CreateNewPerson(Person newPerson)
+        {
+            //DataAccess dataAccess = (DataAccess) App.Current.FindResource("SuperDB");
 
 
-            DateTime vacDate = DateTime.Parse(Hepatitis.VacDate.Text);
-            string nurseName = Hepatitis.Nurse.Text;
-            string vacName = Hepatitis.VacName.Text;
-            //double dose = Convert.ToDouble(Hepatitis.Dose.Text);
-            string dose = Hepatitis.Dose.Text;
-            DateTime expDate = DateTime.Parse(Hepatitis.ExpDate.Text);
-            string serialNumber = Hepatitis.SerialNumber.Text;
-            string sideEff = Hepatitis.SideEffects.Text;
+            string fullName = newPerson.FullName;
+            string? birthDate = newPerson.BirthDate.ToString();
+            string ambCard = newPerson.AmbCard;
+            string doctor = newPerson.Doctor;
+            string polyclinic = newPerson.Polyclinic;
+            string? declarationDate = newPerson.DeclarationDate.ToString();
 
-            записуємо особу
-            DataAccess dataAccess = (DataAccess) App.Current.TryFindResource("SuperDB");
+            if (dataAccess.PersonExists(ambCard, DisplayMsgBox))
+            {
+                return null;
+            }
+            string sql;
 
             sql = $"INSERT INTO [Person] ([FullName], [BirthDate], [AmbCard], " +
-                $"[Doctor], [Polyclinic], [DeclarationDate])" +
-                $" VALUES ('{fullName}', '{birthDate}', '{ambCard}'," +
-                $" '{doctor}', '{polyclinic}', '{declarationDate}');";
-            */
+            $"[Doctor], [Polyclinic], [DeclarationDate])" +
+            $" VALUES ('{fullName}', '{birthDate}', '{ambCard}'," +
+            $" '{doctor}', '{polyclinic}', '{declarationDate}');";
 
-            //bool status = dataAccess.Insert(sql, DisplayMsgBox);
+            //створюємо особу
+            bool res = dataAccess.Insert(sql, DisplayMsgBox);
 
-            ////TODO: прибрати це повідомлення до клясу DataAccess
-            //if (status) MessageBox.Show("Запис створено");
-            //else MessageBox.Show("Wa wa waaa");
+            //перевірка на помилки
+            if (!res)
+                return null;
 
-            ////записуємо гепатит
+            DisplayMsgBox("Успішно створено запис");
 
-            //sql = $"INSERT INTO [Vaccination] " +
-            //    $"([disease_id], [patient_id], [vaccination_date], [nurse_full_name], [vaccine_name], [dose], [expiration_date], [serial_number], [side_effects])" +
-            //    $"VALUES (1, 1,'{vacDate}','{nurseName}','{vacName}', {dose},'{expDate}','{serialNumber}','{sideEff}');";
-            //status = dataAccess.Insert(sql, DisplayMsgBox);
+            //дістанемо особу за амбулаторною карткою
+            sql = $"SELECT * FROM [Person] WHERE [AmbCard] = '{ambCard}'";
 
-            //if (status) MessageBox.Show("Запис гепатиту створено");
-            //else MessageBox.Show("Wa wa wa waaa");
+            Person? person = dataAccess.GetPeople(sql, DisplayMsgBox)? [0];
+            return person;
+        }
+
+        private void CreateNewPassportButton_Click(object sender, RoutedEventArgs e)
+        {
+            Person newPerson;
+            bool personDataFilled, vaccinationDataFilled;
+
+            newPerson = (Person) this.Resources ["newPerson"];
+
+            personDataFilled = CheckPersonDataFilled();
+            vaccinationDataFilled = CheckVaccinationsFilled();
+
+            if (!personDataFilled || !vaccinationDataFilled)
+            {
+                DisplayMsgBox("Спершу заповність усі поля");
+                return;
+            }
+            else
+            {
+
+                Person? person = CreateNewPerson(newPerson);
+                DisplayMsgBox("Особу успішно зареєстровано");
+
+
+                if (person != null)
+                {
+                    bool vaccinationsCreated = CreateVaccinations(person);
+                   if (vaccinationsCreated )
+                    {
+                        DisplayMsgBox("Вакцинації створено");
+                        this.Close();
+                        PassportWindow passportWindow = new PassportWindow(person);
+                    }
+                    else
+                        DisplayMsgBox("Помилка створення вакцнацій");
+                }
+
+            }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Person person = new Person();
+            this.dataAccess = (DataAccess) App.Current.TryFindResource("SuperDB");
+
+            this.Resources ["newPerson"] = person;
+
+            string sql;
+
+            //DataAccess dataAccess = (DataAccess) App.Current.TryFindResource("SuperDB");
+            List<Vaccination> FirstVaccinations = new();
+
+            //продумати кращий варіянт запиту
+            sql = $"SELECT * FROM [Vaccine] WHERE [VaccineName] = 'ГепаВак'";
+            // !!!!!!!!!!!!!!!додати перевірку 
+            Vaccine hepatitisVaccine = dataAccess.GetVaccines(sql, DisplayMsgBox) [0];
+            Vaccination hepatitisVaccination = new Vaccination { Person=person, VaccinationNumber = 1, Vaccine = hepatitisVaccine };
+
+
+            sql = $"SELECT * FROM [Vaccine] WHERE [VaccineName] = 'БЦЖ'";
+            Vaccine tuberculosisVaccine = dataAccess.GetVaccines(sql, DisplayMsgBox) [0];
+            Vaccination tuberculosisVaccination = new Vaccination {Person=person, VaccinationNumber = 1, Vaccine = tuberculosisVaccine };
+
+            FirstVaccinations.Add(hepatitisVaccination);
+            FirstVaccinations.Add(tuberculosisVaccination);
+
+            this.Resources ["FirstVaccinations"] = FirstVaccinations;
         }
     }
 }

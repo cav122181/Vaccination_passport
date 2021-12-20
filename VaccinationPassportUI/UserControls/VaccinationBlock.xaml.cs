@@ -14,5 +14,6 @@ namespace VaccinationPassportUI.User_Controls
         }
 
         public string Title { get; set; }
+
     }
 }

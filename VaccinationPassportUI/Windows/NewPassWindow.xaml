@@ -11,8 +11,10 @@
     Title="Створення нового паспорту"
     Width="800"
     Height="450"
+    Loaded="Window_Loaded"
     Icon="{StaticResource Logo}"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    DataContext="{DynamicResource newPerson}">
     <!--
         xmlns:uc="clr-namespace:Vaccination_passport.User_Controls"   uc - псевдонім простору імен,
         User_Controls - ім'я простору імен
@@ -22,9 +24,9 @@
     <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="15" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="3*" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="0.5*" />
             <RowDefinition Height="15" />
         </Grid.RowDefinitions>
 
@@ -37,232 +39,26 @@
         <uc:PersonDataBlock
             x:Name="PersonData"
             Grid.Row="1"
-            Grid.Column="1" />
+            Grid.Column="1" 
+            DataContext="{Binding Path=.}"/>
         <!--  рядок 1  -->
-        <!--<TextBlock
-            Grid.Row="1"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Style="{StaticResource FieldNameBlock}"
-            Text="Прізвище, ім'я, по батькові" />
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="3"
-            Style="{StaticResource FieldNameBlock}"
-            Text="дата народження" />
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="4"
-            Style="{StaticResource FieldNameBlock}"
-            Text="амбулаторна картка №" />
-        -->
-        <!--  рядок 2  -->
-        <!--
-        <TextBox
-            x:Name="FullName"
-            Grid.Row="2"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Style="{StaticResource ThinTextBox}" />
-        <TextBox
-            x:Name="BirthDate"
-            Grid.Row="2"
-            Grid.Column="3"
-            Style="{StaticResource ThinTextBox}" />
-        <TextBox
-            x:Name="AmbCard"
-            Grid.Row="2"
-            Grid.Column="4"
-            Style="{StaticResource ThinTextBox}" />
 
-        -->
-        <!--  рядок 3  -->
-        <!--
-        <TextBlock
-            Grid.Row="3"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Style="{StaticResource FieldNameBlock}"
-            Text="Дільничий лікар" />
-        <TextBlock
-            Grid.Row="3"
-            Grid.Column="3"
-            Grid.ColumnSpan="2"
-            Style="{StaticResource FieldNameBlock}"
-            Text="поліклініка" />
-        <TextBlock
-            Grid.Row="3"
-            Grid.Column="5"
-            Style="{StaticResource FieldNameBlock}"
-            Text="дата укладення угоди" />
-
-        -->
-        <!--  рядок 4  -->
-        <!--
-        <TextBox
-            x:Name="Doctor"
-            Grid.Row="4"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Style="{StaticResource ThinTextBox}" />
-        <TextBox
-            x:Name="Clinic"
-            Grid.Row="4"
-            Grid.Column="3"
-            Grid.ColumnSpan="2"
-            Style="{StaticResource ThinTextBox}" />
-        <TextBox
-            x:Name="DeclarationDate"
-            Grid.Row="4"
-            Grid.Column="5"
-            Style="{StaticResource ThinTextBox}" />-->
 
         <!--  рядок 5  -->
         <!--  використала об'єкт VaccinationBlock простору імен User_Controls  -->
         <ItemsControl
+            x:Name="FirstVacBlock"
             Grid.Row="2"
             Grid.Column="1"
             Grid.ColumnSpan="2"
+            ItemTemplate="{StaticResource VacTemplate}"
             ItemsSource="{DynamicResource FirstVaccinations}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="15" />
 
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="15" />
-
-
-                        </Grid.ColumnDefinitions>
-
-                        <TextBox
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Grid.ColumnSpan="7"
-                            Style="{StaticResource AquaTextBox}">
-                            <TextBox.Text>
-                                <MultiBinding StringFormat="{}{0}, {1} доза вакцини">
-                                    <Binding Path="Vaccine.Disease.DiseaseName" />
-                                    <Binding Path="VaccinationNumber" />
-
-                                </MultiBinding>
-                            </TextBox.Text>
-                        </TextBox>
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Style="{StaticResource FieldNameBlock}">
-                            дата щеплення, вік
-                        </TextBlock>
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="2"
-                            Style="{StaticResource FieldNameBlock}">
-                            ПІБ медсестри
-                        </TextBlock>
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="3"
-                            Style="{StaticResource FieldNameBlock}">
-                            назва вакцини
-                        </TextBlock>
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="4"
-                            Style="{StaticResource FieldNameBlock}">
-                            уведена доза, мг
-                        </TextBlock>
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="5"
-                            Style="{StaticResource FieldNameBlock}">
-                            термін придатності
-                        </TextBlock>
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="6"
-                            Style="{StaticResource FieldNameBlock}">
-                            серійний номер
-                        </TextBlock>
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="7"
-                            Style="{StaticResource FieldNameBlock}">
-                            побічні реякції
-                        </TextBlock>
-
-                        <TextBox
-                            x:Name="VacDate"
-                            Grid.Row="2"
-                            Grid.Column="1"
-                            Style="{StaticResource FatTextBox}"
-                            Text="{Binding Source={x:Static sys:DateTime.Now}, Mode=OneWay, StringFormat='dd.MM.yyyy'}" />
-                        <TextBox
-                            x:Name="Nurse"
-                            Grid.Row="2"
-                            Grid.Column="2"
-                            Style="{StaticResource FatTextBox}" />
-                        <TextBox
-                            x:Name="VacName"
-                            Grid.Row="2"
-                            Grid.Column="3"
-                            Style="{StaticResource FatTextBox}"
-                            Text="{Binding Vaccine.VaccineName}" />
-                        <TextBox
-                            x:Name="Dose"
-                            Grid.Row="2"
-                            Grid.Column="4"
-                            Style="{StaticResource FatTextBox}"
-                            Text="{Binding Vaccine.Dose}" />
-                        <TextBox
-                            x:Name="ExpDate"
-                            Grid.Row="2"
-                            Grid.Column="5"
-                            Style="{StaticResource FatTextBox}" />
-                        <TextBox
-                            x:Name="SerialNumber"
-                            Grid.Row="2"
-                            Grid.Column="6"
-                            Style="{StaticResource FatTextBox}" />
-                        <TextBox
-                            x:Name="SideEffects"
-                            Grid.Row="2"
-                            Grid.Column="7"
-                            Style="{StaticResource FatTextBox}" />
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
             <!--<sys:String>Гепатит Б</sys:String>
             <sys:String>Туберкульоз</sys:String>-->
             <!--<models:Vaccination NurseFullName="Війолета Цернівна Колайдер"></models:Vaccination>-->
             <!--<models:Vaccination NurseFullName="Війолета Цернівна Колайдер"></models:Vaccination>-->
         </ItemsControl>
-        <!--<uc:VaccinationBlock
-            x:Name="Hepatitis"
-            Title="Гепатит В, 1 доза вакцини"
-            Grid.Row="6"
-            Grid.RowSpan="3"
-            Grid.Column="0"
-            Grid.ColumnSpan="9" />
-        <uc:VaccinationBlock
-            x:Name="Tuberculosis"
-            Title="Туберкульоз, 1 доза вакцини"
-            Grid.Row="9"
-            Grid.RowSpan="3"
-            Grid.Column="0"
-            Grid.ColumnSpan="9" />-->
 
         <Button
             x:Name="Cancel"
