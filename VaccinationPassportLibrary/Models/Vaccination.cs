@@ -14,6 +14,10 @@ namespace VaccinationPassportLibrary.Models
         private string? serialNumber;
         private string? sideEffects;
 
+
+
+
+
         public int ID
         {
             get => iD; set
@@ -35,7 +39,7 @@ namespace VaccinationPassportLibrary.Models
             get => person; set
             {
                 person = value;
-                OnPropertyChanged(nameof (Person));
+                OnPropertyChanged(nameof(Person));
             }
         }
         public DateTime? VaccinationDate
@@ -77,7 +81,7 @@ namespace VaccinationPassportLibrary.Models
                 serialNumber = value;
                 OnPropertyChanged(nameof(SerialNumber));
             }
-            
+
         }
         public string? SideEffects
         {
@@ -98,11 +102,17 @@ namespace VaccinationPassportLibrary.Models
 
         public override string ToString()
         {
-            //return $"Vaccination INFO {Vaccine}" +
-            //    $"ID {ID}" +
-            //    $"PERSON {Person.ToString()}" +
-            //$"Nurse {NurseFullName}";
-            return ID.ToString();
+            string format =
+
+            $"\nПІБ особи: {Person.FullName}\n" +
+            $"Дата народження: {Person.BirthDate}\n" +
+            $"Проти хвороби: {Vaccine.Disease.DiseaseName}\n" +
+            $"Щеплення №: {ID}\n" +
+            $"Назва вакцини: {Vaccine.VaccineName}\n" +
+            $"Дата щеплення {VaccinationDate}\n" +
+            $"Побічні реякції {SideEffects}\n";
+
+            return format;
 
         }
     }

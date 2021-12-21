@@ -11,6 +11,6 @@
         <Button
             Margin="0,25,0,0"
             Content="Згенерувати QR-код"
-            Style="{StaticResource AquaButton}" />
+            Style="{StaticResource AquaButton}" Click="SaveVaccinationsAsQr" />
     </StackPanel>
 </UserControl>

@@ -16,7 +16,7 @@ namespace VaccinationPassportLibrary.DB
         /// 
 
 
-        string GetProjectDirectory()
+        public string GetProjectDirectory()
         {
             string workingDirectory = Environment.CurrentDirectory;
             string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
