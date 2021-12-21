@@ -89,16 +89,6 @@
             Style="{StaticResource AquaButton}">
             Створити новий паспорт
         </Button>
-        <Button
-            x:Name="TestButton"
-            Grid.Row="5"
-            Grid.Column="3"
-            Background="#019BA9"
-            Click="TestButton_Click"
-            FontSize="15"
-            Foreground="White">
-            test
-        </Button>
     </Grid>
 
 </Window>

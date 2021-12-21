@@ -3,14 +3,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:tk="http://schemas.xceed.com/wpf/xaml/toolkit">
 
-
-
     <Style x:Key="AbstractTextBox" TargetType="TextBox" />
+
     <Style x:Key="AquaTextBox" TargetType="TextBox">
         <Setter Property="Background" Value="#019BA9" />
-        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Foreground" Value="White" />
-        <Setter Property="Height" Value="25" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Height" Value="{StaticResource ElementHeight}" />
         <Setter Property="TextAlignment" Value="Left" />
     </Style>
 
@@ -36,17 +35,9 @@
         BasedOn="{StaticResource FatTextBox}"
         TargetType="TextBox">
 
-        <Setter Property="IsReadOnly" Value="{Binding Path=ID, Mode=OneWay, Converter={StaticResource ReadOnlyConverter}}" />
+        <Setter Property="IsReadOnly" Value="{Binding Path=ID, Mode=OneWay, Converter={StaticResource ReadOnlyConverter}, ConverterParameter=true}" />
     </Style>
 
-    <Style x:Key="SearchBox" TargetType="tk:WatermarkComboBox">
-        <Setter Property="DisplayMemberPath" Value="FullName" />
-        <Setter Property="Height" Value="{StaticResource ElementHeight}" />
-        <Setter Property="IsEditable" Value="True" />
-        <Setter Property="IsReadOnly" Value="False" />
-        <Setter Property="SelectedValuePath" Value="ID" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-    </Style>
 
 
 </ResourceDictionary>

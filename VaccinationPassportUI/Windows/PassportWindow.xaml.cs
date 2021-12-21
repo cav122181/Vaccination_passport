@@ -21,12 +21,28 @@ namespace VaccinationPassportUI.Windows
         {
             InitializeComponent();
             this.Resources ["currentPerson"] = currentPerson;
+            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             dataAccess = (DataAccess) App.Current.Resources ["SuperDB"];
 
+            GetPersonsVaccinations();
+            GetAllDiseases();
+        }
+
+
+
+        private void GetAllDiseases()
+        {
+            string sql = $"SELECT * FROM [Disease]";
+            List<Disease> diseases = dataAccess.GetDiseases(sql, DisplayMsgBox);
+            this.Resources ["AllDiseases"] = diseases;
+
+        }
+        private void GetPersonsVaccinations()
+        {
             Person person = (Person) this.Resources ["currentPerson"];
 
 
@@ -51,5 +67,6 @@ namespace VaccinationPassportUI.Windows
             this.Resources ["PlanVaccinations"] = planVaccinations;
             this.Resources ["OtherVaccinations"] = otherVaccinations;
         }
+        
     }
 }

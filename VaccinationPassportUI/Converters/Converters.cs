@@ -3,10 +3,11 @@ using System.Globalization;
 using System.Windows.Data;
 namespace VaccinationPassportUI.Converters
 {
-    internal class IsVaccinationReadOnlyConverter : IValueConverter
+    public class IsVaccinationReadOnlyConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+
             bool isReadonly = false;
             if (value is int)
             {
@@ -20,7 +21,11 @@ namespace VaccinationPassportUI.Converters
                         break;
                 }
             }
-            return isReadonly;
+            var param = parameter as string;
+            if (param == "reverse")
+                return !isReadonly;
+            else return isReadonly;
+
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -28,4 +33,6 @@ namespace VaccinationPassportUI.Converters
             return null;
         }
     }
+
+
 }

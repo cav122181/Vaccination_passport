@@ -11,9 +11,9 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
-            <Style TargetType="TextBox">
+            <!--<Style TargetType="TextBox">
                 <Setter Property="IsReadOnly" Value="True" />
-            </Style>
+            </Style>-->
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <!--<ColumnDefinition Width="15"/>-->
