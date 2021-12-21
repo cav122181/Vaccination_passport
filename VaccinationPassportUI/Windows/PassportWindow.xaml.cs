@@ -11,7 +11,7 @@ namespace VaccinationPassportUI.Windows
     /// </summary>
     public partial class PassportWindow : Window
     {
-        private DataAccess dataAccess;
+        private DataAccess? dataAccess;
         public PassportWindow()
         {
             InitializeComponent();
@@ -21,20 +21,28 @@ namespace VaccinationPassportUI.Windows
         {
             InitializeComponent();
             this.Resources ["currentPerson"] = currentPerson;
-            //PersonData.FullNameBox.Text = currentPerson.FullName;
-            //PersonData.BirthDateBox.Text = Convert.ToString(currentPerson.BirthDate);
-            //PersonData.AmbCardBox.Text = currentPerson.AmbCard;
-            //PersonData.DoctorBox.Text = currentPerson.Doctor;
-            //PersonData.ClinicBox.Text = currentPerson.Polyclinic;
-            //PersonData.DeclarationDateBox.Text = Convert.ToString(currentPerson.DeclarationDate);
-
-
+            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             dataAccess = (DataAccess) App.Current.Resources ["SuperDB"];
 
+            GetPersonsVaccinations();
+            GetAllDiseases();
+        }
+
+
+
+        private void GetAllDiseases()
+        {
+            string sql = $"SELECT * FROM [Disease]";
+            List<Disease> diseases = dataAccess.GetDiseases(sql, DisplayMsgBox);
+            this.Resources ["AllDiseases"] = diseases;
+
+        }
+        private void GetPersonsVaccinations()
+        {
             Person person = (Person) this.Resources ["currentPerson"];
 
 
@@ -43,7 +51,6 @@ namespace VaccinationPassportUI.Windows
             List<Vaccination> allVaccinations = dataAccess.GetVaccinations(sql, DisplayMsgBox);
 
 
-            //List<Vaccination> planVaccinations = dataAccess.GetVaccinations(sql, DisplayMsgBox);
             List<Vaccination> planVaccinations = (from vacc in allVaccinations
                                                   where vacc.Vaccine.Disease.Mandatory
                                                   select vacc).ToList();
@@ -52,8 +59,14 @@ namespace VaccinationPassportUI.Windows
                                                    where !vacc.Vaccine.Disease.Mandatory
                                                    select vacc).ToList();
 
+            // додаємо одну пусту вакцинаю в кожний список
+            // для можливости заповнення нової вакцини
+            planVaccinations.Add(new Vaccination());
+            otherVaccinations.Add(new Vaccination());
+
             this.Resources ["PlanVaccinations"] = planVaccinations;
             this.Resources ["OtherVaccinations"] = otherVaccinations;
         }
+        
     }
 }

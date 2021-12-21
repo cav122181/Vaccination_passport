@@ -11,10 +11,10 @@
     Title="Створення нового паспорту"
     Width="800"
     Height="450"
-    Loaded="Window_Loaded"
+    DataContext="{DynamicResource newPerson}"
     Icon="{StaticResource Logo}"
-    mc:Ignorable="d"
-    DataContext="{DynamicResource newPerson}">
+    Loaded="Window_Loaded"
+    mc:Ignorable="d">
     <!--
         xmlns:uc="clr-namespace:Vaccination_passport.User_Controls"   uc - псевдонім простору імен,
         User_Controls - ім'я простору імен
@@ -39,8 +39,8 @@
         <uc:PersonDataBlock
             x:Name="PersonData"
             Grid.Row="1"
-            Grid.Column="1" 
-            DataContext="{Binding Path=.}"/>
+            Grid.Column="1"
+            DataContext="{Binding Path=.}" />
         <!--  рядок 1  -->
 
 
