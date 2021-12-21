@@ -89,7 +89,7 @@ namespace VaccinationPassportUI.Windows
                 else
                 {
                     if (string.IsNullOrWhiteSpace(Convert.ToString(propertyValue)))
-                     {
+                    {
                         return false;
 
 
@@ -104,7 +104,7 @@ namespace VaccinationPassportUI.Windows
         public bool CheckVaccinationsFilled()
         {
             List<Vaccination> firstVaccinations = (List<Vaccination>) this.Resources ["FirstVaccinations"];
-            
+
             foreach (var vaccination in firstVaccinations)
             {
                 var propertiesValues = from property in vaccination.GetType().GetProperties()
@@ -121,7 +121,7 @@ namespace VaccinationPassportUI.Windows
                         {
                             return false;
                         }
-                        
+
                     }
                     else
                     {
@@ -258,7 +258,7 @@ namespace VaccinationPassportUI.Windows
                 if (person != null)
                 {
                     bool vaccinationsCreated = CreateVaccinations(person);
-                   if (vaccinationsCreated )
+                    if (vaccinationsCreated)
                     {
                         DisplayMsgBox("Вакцинації створено");
                         this.Close();
@@ -287,12 +287,12 @@ namespace VaccinationPassportUI.Windows
             sql = $"SELECT * FROM [Vaccine] WHERE [VaccineName] = 'ГепаВак'";
             // !!!!!!!!!!!!!!!додати перевірку 
             Vaccine hepatitisVaccine = dataAccess.GetVaccines(sql, DisplayMsgBox) [0];
-            Vaccination hepatitisVaccination = new Vaccination { Person=person, VaccinationNumber = 1, Vaccine = hepatitisVaccine };
+            Vaccination hepatitisVaccination = new Vaccination { Person = person, VaccinationNumber = 1, Vaccine = hepatitisVaccine };
 
 
             sql = $"SELECT * FROM [Vaccine] WHERE [VaccineName] = 'БЦЖ'";
             Vaccine tuberculosisVaccine = dataAccess.GetVaccines(sql, DisplayMsgBox) [0];
-            Vaccination tuberculosisVaccination = new Vaccination {Person=person, VaccinationNumber = 1, Vaccine = tuberculosisVaccine };
+            Vaccination tuberculosisVaccination = new Vaccination { Person = person, VaccinationNumber = 1, Vaccine = tuberculosisVaccine };
 
             FirstVaccinations.Add(hepatitisVaccination);
             FirstVaccinations.Add(tuberculosisVaccination);

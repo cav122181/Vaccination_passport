@@ -2,6 +2,7 @@
     x:Class="VaccinationPassportUI.Windows.PassportWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:VaccinationPassportUI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:VaccinationPassportUI.Windows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -52,8 +53,7 @@
                         x:Name="PlanVacc"
                         Margin="0,20,0,0"
                         ItemTemplate="{StaticResource VacTemplate}"
-                        ItemsSource="{DynamicResource PlanVaccinations}">
-                    </ItemsControl>
+                        ItemsSource="{DynamicResource PlanVaccinations}" />
                 </ScrollViewer>
             </Grid>
         </TabItem>

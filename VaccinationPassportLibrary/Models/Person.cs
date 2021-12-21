@@ -95,7 +95,7 @@ namespace VaccinationPassportLibrary.Models
                 if (declarationDate != value)
                 {
                     declarationDate = value;
-                   
+
                     OnPropertyChanged("DeclarationDate");
                 }
             }
@@ -109,7 +109,7 @@ namespace VaccinationPassportLibrary.Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        
+
 
     }
 }
