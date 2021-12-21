@@ -10,6 +10,8 @@
                 <ResourceDictionary Source="Configs/DB.xaml" />
                 <ResourceDictionary Source="Configs/Images.xaml" />
                 <ResourceDictionary Source="Styles/Styles.xaml" />
+                <ResourceDictionary Source="Styles/TextBoxes.xaml" />
+                
                 <ResourceDictionary Source="Styles/VacTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
 

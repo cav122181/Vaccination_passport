@@ -10,7 +10,7 @@ namespace VaccinationPassportUI.Windows
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        private DataAccess? dataAccess;
 
         public MainWindow()
         {
@@ -33,7 +33,8 @@ namespace VaccinationPassportUI.Windows
                 DisplayMsgBox("Будь ласка, оберіть особу зі списку.");
                 return;
             }
-            string sql;
+            //string sql;
+
             //string id = PersonSearchBox.Text;
 
 
@@ -69,14 +70,18 @@ namespace VaccinationPassportUI.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            string sql;
+            dataAccess = (DataAccess) App.Current.FindResource("SuperDB");
 
+            GetAllPeople();
+        }
+        private void GetAllPeople()
+        {
+            string sql;
             sql = "SELECT * FROM [Person]";
-            DataAccess dataAccess = (DataAccess) App.Current.FindResource("SuperDB");
 
             List<Person> people = dataAccess.GetPeople(sql, DisplayMsgBox);
-            App.Current.Resources ["AllPeople"] = people;
 
+            App.Current.Resources ["AllPeople"] = people;
         }
     }
 }
