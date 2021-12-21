@@ -167,7 +167,7 @@ namespace VaccinationPassportUI.Windows
             foreach (var vac in vaccinations)
             {
 
-                int vacId = vac.Vaccine.Id;
+                int vacId = vac.Vaccine.ID;
                 int personId = person.ID;
                 string vacDate = vac.VaccinationDate.ToString();
                 string nurseName = vac.NurseFullName;

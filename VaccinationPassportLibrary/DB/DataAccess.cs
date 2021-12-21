@@ -211,7 +211,7 @@ namespace VaccinationPassportLibrary.DB
                 while (reader.Read())
                 {
                     Vaccine vaccine = new Vaccine();
-                    vaccine.Id = (int) DBNullCheck(reader ["ID"]);
+                    vaccine.ID = (int) DBNullCheck(reader ["ID"]);
                     vaccine.VaccineName = (string) DBNullCheck(reader ["VaccineName"]);
                     vaccine.Dose = (double) DBNullCheck(reader ["Dose"]);
 

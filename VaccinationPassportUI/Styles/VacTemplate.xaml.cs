@@ -20,22 +20,6 @@ namespace VaccinationPassportUI.Styles
 
         private void WatermarkComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            WatermarkComboBox comboBox = (WatermarkComboBox) sender;
-
-
-
-            int vaccineID = (int)comboBox.SelectedValue;
-
-            string sql = $"SELECT * FROM [Vaccine] WHERE [ID] = {vaccineID}";
-
-            List<Vaccine> vaccines = dataAccess.GetVaccines(sql, DisplayMsgBox);
-
-            
-            var vacBox = ((Grid) comboBox.Parent).FindName("VacName") as WatermarkComboBox;
-            vacBox.Resources ["VaccinesForSelectedDisease"] = vaccines;
-
-
-
         }
     }
 }

@@ -29,8 +29,8 @@
                 Grid.Row="0"
                 Grid.Column="1"
                 Grid.ColumnSpan="7"
-                SelectedValue="{Binding Vaccine.Disease.ID}"
-                SelectionChanged="WatermarkComboBox_SelectionChanged"
+                ItemsSource="{DynamicResource AllDiseases}"
+                SelectedValue="{Binding Vaccine.Disease.ID, Mode=OneWay}"
                 Style="{StaticResource DiseaseBox}"
                 Watermark="Оберіть захворювання" />
             <TextBlock
@@ -83,7 +83,6 @@
                 DefaultValue="{Binding Source={x:Static sys:DateTime.Now}, Mode=OneWay, StringFormat='dd.MM.yyyy'}"
                 Style="{StaticResource FatDatePicker}"
                 Value="{Binding VaccinationDate}" />
-
             <!--  Style="{StaticResource FatTextBox}"  -->
             <TextBox
                 x:Name="Nurse"
@@ -105,6 +104,8 @@
                 Grid.Column="3"
                 IsReadOnly="True"
                 ItemsSource="{DynamicResource VaccinesForSelectedDisease}"
+                DataContext="{Binding Vaccine}"
+                SelectedItem="{Binding Path = . , Mode=TwoWay}"
                 Style="{StaticResource VaccineBox}" />
             <!--  SelectedValue="{Binding Vaccine}"  -->
 
