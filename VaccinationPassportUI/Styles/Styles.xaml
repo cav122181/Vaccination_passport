@@ -8,6 +8,9 @@
 
     <sys:Double x:Key="ElementHeight">30</sys:Double>
     <converters:IsVaccinationReadOnlyConverter x:Key="ReadOnlyConverter" />
+    <converters:SelectedVaccineItemToIDConverter x:Key="VaccineToIdConverter" />
+    <converters:VaccineToIdConverter x:Key="vacToIdConverter"/>
+    <converters:DiseaseToIdConverter x:Key="disToIdConverter"/>
     <Style x:Key="AbstractDatePicker" TargetType="tk:DateTimePickerBase">
         <Setter Property="TextAlignment" Value="Left" />
         <Setter Property="Format" Value="ShortDate" />

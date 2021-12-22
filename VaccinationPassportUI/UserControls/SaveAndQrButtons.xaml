@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <StackPanel Width="180">
-        <Button Content="Зберегти дані" Style="{StaticResource AquaButton}" />
+        <Button Content="Зберегти дані" Style="{StaticResource AquaButton}" Click="SaveChanges"/>
         <Button
             Margin="0,25,0,0"
             Content="Згенерувати QR-код"

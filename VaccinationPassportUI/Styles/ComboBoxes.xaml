@@ -26,12 +26,15 @@
         x:Key="DiseaseBox"
         BasedOn="{StaticResource AbstractComboBox}"
         TargetType="tk:WatermarkComboBox">
-
-        <!--<Setter Property="ItemsSource" Value="{DynamicResource AllDiseases}" />-->
-
+        <!--<Style.Triggers>
+            <DataTrigger Binding="{Binding Path=ID}" Value="0">
+                <EventSetter Event="SelectionChanged" Handler="DiseaseSelected" />
+            </DataTrigger>
+        </Style.Triggers>-->
+        <Setter Property="ItemsSource" Value="{DynamicResource AllDiseases}" />
         <Setter Property="Background" Value="#019BA9" />
         <Setter Property="Foreground" Value="Black" />
-
+        <Setter Property="SelectedValue" Value="{Binding Path=Vaccine.Disease, Mode=TwoWay, Converter={StaticResource disToIdConverter}}" />
 
         <!--<Setter Property="SelectedValue" Value="{Binding Path=Vaccine.Disease.ID}" />-->
         <Setter Property="IsEnabled" Value="{Binding Path=ID, Mode=OneWay, Converter={StaticResource ReadOnlyConverter}, ConverterParameter=reverse}" />
@@ -41,7 +44,7 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="IsEditable" Value="False" />
         <Setter Property="IsReadOnly" Value="True" />
-        <EventSetter Event="SelectionChanged" Handler="DiseaseSelected" />
+
         <Setter Property="SelectedValuePath" Value="ID" />
 
     </Style>
@@ -53,13 +56,28 @@
         x:Key="VaccineBox"
         BasedOn="{StaticResource AbstractComboBox}"
         TargetType="tk:WatermarkComboBox">
-        <EventSetter Event="SelectionChanged" Handler="WatermarkComboBox_SelectionChanged"/>
+        <!--<Style.Triggers>
+            <DataTrigger Binding="{Binding Path=ID}" Value="0">
+                <Setter Property="ItemsSource" Value="{DynamicResource VaccinesForSelectedDisease}" />
+
+            </DataTrigger>
+        </Style.Triggers>-->
+        <!--<EventSetter Event="SelectionChanged" Handler="WatermarkComboBox_SelectionChanged" />-->
         <!--<EventSetter Event="TargetUpdated" Handler="WatermarkComboBox_TargetUpdated"/>-->
+        <Setter Property="ItemsSource" Value="{DynamicResource AllVaccines}" />
         <Setter Property="DisplayMemberPath" Value="VaccineName" />
         <Setter Property="SelectedValuePath" Value="ID" />
         <Setter Property="IsEditable" Value="False" />
         <Setter Property="IsReadOnly" Value="True" />
-       
+
+        <!--<Setter Property="ItemsSource" Value="{DynamicResource VaccinesForSelectedDisease}" />-->
+
+        <!--<Setter Property="ItemsSource">
+            <Setter.Value>
+                <Binding Path="oneVaccineList" />
+            </Setter.Value>
+        </Setter>-->
+        <Setter Property="SelectedValue" Value="{Binding Path=Vaccine, Mode=TwoWay, Converter={StaticResource vacToIdConverter}}" />
         <Setter Property="IsEnabled" Value="{Binding Path=ID, Mode=OneWay, Converter={StaticResource ReadOnlyConverter}, ConverterParameter=reverse}" />
     </Style>
 </ResourceDictionary>

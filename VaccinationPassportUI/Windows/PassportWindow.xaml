@@ -14,7 +14,7 @@
     Icon="{StaticResource Logo}"
     Loaded="Window_Loaded"
     mc:Ignorable="d">
-    <TabControl>
+    <TabControl x:Name="VaccinationsTypeTabs">
         <TabItem Header="Планові щеплення">
             <Grid>
                 <Grid.ColumnDefinitions>

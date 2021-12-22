@@ -93,6 +93,15 @@ namespace VaccinationPassportLibrary.Models
         }
 
         public List<Vaccine> TemporaryVaccines { get; set; } = new List<Vaccine>();
+        public List<Vaccine> oneVaccineList
+        {
+            get
+            {
+                List<Vaccine> oneVaccine = new List<Vaccine>();
+                oneVaccine.Add(this.Vaccine);
+                return oneVaccine;
+            }
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged(string propertyName)
@@ -104,13 +113,13 @@ namespace VaccinationPassportLibrary.Models
         {
             string format =
 
-            $"\nПІБ особи: {Person.FullName}\n" +
-            $"Дата народження: {Person.BirthDate}\n" +
-            $"Проти хвороби: {Vaccine.Disease.DiseaseName}\n" +
-            $"Щеплення №: {ID}\n" +
-            $"Назва вакцини: {Vaccine.VaccineName}\n" +
-            $"Дата щеплення {VaccinationDate}\n" +
-            $"Побічні реякції {SideEffects}\n";
+            $"\nPerson's Full Name: {Person.FullName}\n" +
+            $"Date of Birth: {Person.BirthDate}\n" +
+            $"Against disease: {Vaccine.Disease.DiseaseName}\n" +
+            $"Vaccinations №: {ID}\n" +
+            $"Name of the vaccine: {Vaccine.VaccineName}\n" +
+            $"Vaccination Date {VaccinationDate}\n" +
+            $"Side effects {SideEffects}\n";
 
             return format;
 

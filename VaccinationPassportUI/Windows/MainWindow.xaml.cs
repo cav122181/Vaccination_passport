@@ -73,7 +73,37 @@ namespace VaccinationPassportUI.Windows
             dataAccess = (DataAccess) App.Current.FindResource("SuperDB");
 
             GetAllPeople();
+            GetAllDiseases();
+            GetAllVaccines();
+
         }
+
+        /// <summary>
+        /// Установлює список захворювань для всієї програми
+        /// </summary>
+        private void GetAllDiseases()
+        {
+            string sql = $"SELECT * FROM [Disease]";
+            List<Disease> diseases = dataAccess.GetDiseases(sql, DisplayMsgBox);
+
+
+            //
+            App.Current.Resources ["AllDiseases"] = diseases;
+
+        }
+
+        private void GetAllVaccines()
+        {
+            string sql = $"SELECT * FROM [Vaccine]";
+            List<Vaccine> vaccines = dataAccess.GetVaccines(sql, DisplayMsgBox);
+
+
+            //
+            App.Current.Resources ["AllVaccines"] = vaccines;
+
+        }
+
+
         private void GetAllPeople()
         {
             string sql;
