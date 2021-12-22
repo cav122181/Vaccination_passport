@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows10.0.22000.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\PassportLogo.png" />
+    <None Remove="Images\Search.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VaccinationPassportLibrary\VaccinationPassportLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\PassportLogo.png" />
+    <Resource Include="Images\Search.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ResourceDictionaries\" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+</Project>

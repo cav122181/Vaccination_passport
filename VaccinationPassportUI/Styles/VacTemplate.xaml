@@ -1,0 +1,151 @@
+﻿<ResourceDictionary
+    x:Class="VaccinationPassportUI.Styles.VacTemplate"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:VaccinationPassportUI.Converters"
+    xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+    xmlns:tk="http://schemas.xceed.com/wpf/xaml/toolkit">
+
+    <!--  Використовує екзепляр клясу Vaccination для контексту  -->
+    <DataTemplate x:Key="VacTemplate">
+        <Grid Margin="0,0,0,15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="15" />
+
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="15" />
+            </Grid.ColumnDefinitions>
+            <tk:WatermarkComboBox
+                x:Name="DiseaseSelectorBox"
+                Grid.Row="0"
+                Grid.Column="1"
+                Grid.ColumnSpan="7"
+                Style="{StaticResource DiseaseBox}"
+                Watermark="Оберіть захворювання" />
+            <!--  SelectedValue="{Binding ElementName=VacName, Path=SelectedItem, Mode=OneWay, Converter={StaticResource VaccineToIdConverter}}"  -->
+            <!--  SelectedValue="{Binding Vaccine.Disease.ID, Mode=OneWay}"  -->
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="1"
+                Style="{StaticResource FieldNameBlock}">
+                дата щеплення, вік
+            </TextBlock>
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="2"
+                Style="{StaticResource FieldNameBlock}">
+                ПІБ медсестри
+            </TextBlock>
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="3"
+                Style="{StaticResource FieldNameBlock}">
+                назва вакцини
+            </TextBlock>
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="4"
+                Style="{StaticResource FieldNameBlock}">
+                уведена доза, мг
+            </TextBlock>
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="5"
+                Style="{StaticResource FieldNameBlock}">
+                термін придатності
+            </TextBlock>
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="6"
+                Style="{StaticResource FieldNameBlock}">
+                серійний номер
+            </TextBlock>
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="7"
+                Style="{StaticResource FieldNameBlock}">
+                побічні реякції
+            </TextBlock>
+
+            <tk:DateTimePickerBase
+                x:Name="VacDate"
+                Grid.Row="2"
+                Grid.Column="1"
+                DefaultValue="{Binding Source={x:Static sys:DateTime.Now}, Mode=OneWay, StringFormat='dd.MM.yyyy'}"
+                Style="{StaticResource FatDatePicker}"
+                Value="{Binding VaccinationDate}" />
+            <!--  Style="{StaticResource FatTextBox}"  -->
+            <TextBox
+                x:Name="Nurse"
+                Grid.Row="2"
+                Grid.Column="2"
+                Style="{StaticResource BindedEditibilityBox}"
+                Text="{Binding NurseFullName}" />
+            <!--<TextBox
+                x:Name="VacName"
+                Grid.Row="2"
+                Grid.Column="3"
+                IsReadOnly="True"
+                IsReadOnlyCaretVisible="False"
+                Style="{StaticResource BindedEditibilityBox}"
+                Text="{Binding Vaccine.VaccineName}" />-->
+            <tk:WatermarkComboBox
+                x:Name="VacName"
+                Grid.Row="2"
+                Grid.Column="3"
+                IsReadOnly="True"
+                Style="{StaticResource VaccineBox}" />
+            <!--  SelectedValue="{Binding }"/>  -->
+            <!--  DataContext="{Binding Vaccine}"  -->
+            <!--  SelectedItem="{Binding Path=., Mode=TwoWay}"  -->
+            <!--  SelectedValue="{Binding Vaccine}"  -->
+
+            <!--  Text="{Binding Vaccine.VaccineName}"  -->
+            <!--  ItemsSource="{DynamicResource VaccinesForSelectedDisease}"  -->
+
+            <TextBox
+                x:Name="Dose"
+                Grid.Row="2"
+                Grid.Column="4"
+                IsReadOnly="True"
+                IsReadOnlyCaretVisible="False"
+                Style="{StaticResource BindedEditibilityBox}"
+                Text="{Binding Vaccine.Dose}" />
+            <!--<TextBox
+                x:Name="ExpDate"
+                Grid.Row="2"
+                Grid.Column="5"
+                Style="{StaticResource FatTextBox}" />-->
+            <tk:DateTimePickerBase
+                x:Name="ExpDate"
+                Grid.Row="2"
+                Grid.Column="5"
+                DefaultValue="{Binding Source={x:Static sys:DateTime.Now}, Mode=OneWay, StringFormat='dd.MM.yyyy'}"
+                Style="{StaticResource FatDatePicker}"
+                Value="{Binding ExpirationDate}" />
+            <TextBox
+                x:Name="SerialNumber"
+                Grid.Row="2"
+                Grid.Column="6"
+                Style="{StaticResource BindedEditibilityBox}"
+                Text="{Binding SerialNumber}" />
+            <TextBox
+                x:Name="SideEffects"
+                Grid.Row="2"
+                Grid.Column="7"
+                Style="{StaticResource BindedEditibilityBox}"
+                Text="{Binding SideEffects}" />
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>
